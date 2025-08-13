@@ -537,7 +537,7 @@ show_statistics() {
 # FUNCTION: 2-minute transfer loop (1P → SOA → RPM)
 # =============================================================================
 start_transfer_loop() {
-    local interval_seconds=120
+    local interval_seconds=30
     echo -e "${BLUE}⏱️ Starting transfer loop: every 2 minutes (includes directory checks)${NC}"
     while true; do
         # Ensure directories exist each cycle (Step 1)
