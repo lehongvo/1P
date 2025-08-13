@@ -165,6 +165,14 @@ check_and_create_directories() {
     done
     
     echo -e "${BLUE}🐳 Checking and creating Docker container directories...${NC}"
+
+    # Ensure top-level symlinks so both /sftp and /home/demo/sftp work (same for /soa)
+    docker exec $DOCKER_CONTAINER bash -lc '
+        set -e
+        mkdir -p /home/demo/sftp /home/demo/soa /home/demo/sftp/rpm || true
+        if [ ! -e /sftp ]; then ln -s /home/demo/sftp /sftp; fi
+        if [ ! -e /soa ]; then ln -s /home/demo/soa /soa; fi
+    ' >/dev/null 2>&1 || true
     
     # Check and create Docker directories (1P, SOA, RPM)
     local docker_dirs=(
@@ -535,6 +543,15 @@ start_transfer_loop() {
         # Ensure directories exist each cycle (Step 1)
         check_and_create_directories
 
+        # Generate and upload fresh data each cycle
+        echo -e "${YELLOW}🧪 Generating new mock data for this cycle (TOTAL_FILES per type: $TOTAL_FILES)...${NC}"
+        generate_price_files
+        generate_promotion_files
+        generate_feedback_price_files
+        generate_feedback_promotion_files
+        upload_to_docker
+        fix_ownership
+
         echo -e "${YELLOW}🔄 Syncing 1P → SOA (price, promotion)...${NC}"
         docker exec $DOCKER_CONTAINER bash -lc "
             shopt -s nullglob
@@ -553,20 +570,18 @@ start_transfer_loop() {
         echo -e "${YELLOW}🧩 Enriching within SOA (SOA → SOA noop step)...${NC}"
         # No-op enrichment placeholder. Extend here if enrichment logic is needed.
 
-        echo -e "${YELLOW}📦 Syncing SOA → RPM (processed, pending)...${NC}"
+        echo -e "${YELLOW}📦 Syncing SOA → RPM (processed only)...${NC}"
         docker exec $DOCKER_CONTAINER bash -lc "
             shopt -s nullglob
             # SOA → RPM price
             for f in $SFTP_SOA_PRICE/TH_PRCH_${DATE_PATTERN}*.ods; do
                 base=\$(basename \"\$f\")
                 [ -f $SFTP_RPM_PROCESSED/\$base ] || cp \"\$f\" $SFTP_RPM_PROCESSED/
-                [ -f $SFTP_RPM_PENDING/\$base ] || cp \"\$f\" $SFTP_RPM_PENDING/
             done
             # SOA → RPM promotion
             for f in $SFTP_SOA_PROMOTION/TH_PROMPRCH_${DATE_PATTERN}*.ods; do
                 base=\$(basename \"\$f\")
                 [ -f $SFTP_RPM_PROCESSED/\$base ] || cp \"\$f\" $SFTP_RPM_PROCESSED/
-                [ -f $SFTP_RPM_PENDING/\$base ] || cp \"\$f\" $SFTP_RPM_PENDING/
             done
         " >/dev/null 2>&1 || true
 
