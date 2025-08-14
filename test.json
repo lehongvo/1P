@@ -1,0 +1,110 @@
+{
+  "price": {
+    "transferred": [
+      {
+        "filename": "TH_PRCH_20250814072309.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:23:10",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.729110"
+      },
+      {
+        "filename": "TH_PRCH_20250814100416.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:20:58",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.746535"
+      },
+      {
+        "filename": "TH_PRCH_20250814113737.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:20:58",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.869809"
+      },
+      {
+        "filename": "TH_PRCH_20250814124319.ods",
+        "source_size_mb": 0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:25:19",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.881852"
+      }
+    ],
+    "pending": [],
+    "failed": [
+      {
+        "filename": "TH_PRCH_20250814051805.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "failed",
+        "transfer_timestamp": "2025-08-14T03:27:32",
+        "error_message": "Error checking transfer: local variable 'file_info' referenced before assignment",
+        "tracked_at": "2025-08-14T03:30:03.716951"
+      }
+    ],
+    "summary": {
+      "total_files": 5,
+      "transferred_count": 4,
+      "pending_count": 0,
+      "failed_count": 1,
+      "transfer_rate": "80.0%"
+    }
+  },
+  "promotion": {
+    "transferred": [
+      {
+        "filename": "TH_PROMPRCH_20250814085312.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:20:58",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.943722"
+      },
+      {
+        "filename": "TH_PROMPRCH_20250814091136.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:20:58",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.947178"
+      },
+      {
+        "filename": "TH_PROMPRCH_20250814102518.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:25:19",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.967021"
+      },
+      {
+        "filename": "TH_PROMPRCH_20250814125952.ods",
+        "source_size_mb": 0,
+        "transfer_status": "transferred",
+        "transfer_timestamp": "2025-08-14T03:23:10",
+        "error_message": "",
+        "tracked_at": "2025-08-14T03:30:03.973810"
+      }
+    ],
+    "pending": [],
+    "failed": [
+      {
+        "filename": "TH_PROMPRCH_20250814071421.ods",
+        "source_size_mb": 0.0,
+        "transfer_status": "failed",
+        "transfer_timestamp": "2025-08-14T03:27:32",
+        "error_message": "Error checking transfer: local variable 'file_info' referenced before assignment",
+        "tracked_at": "2025-08-14T03:30:03.927445"
+      }
+    ],
+    "summary": {
+      "total_files": 5,
+      "transferred_count": 4,
+      "pending_count": 0,
+      "failed_count": 1,
+      "transfer_rate": "80.0%"
+    }
+  }
+}

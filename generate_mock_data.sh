@@ -543,7 +543,7 @@ start_transfer_loop() {
         # Ensure directories exist each cycle (Step 1)
         check_and_create_directories
 
-        # Generate and upload fresh data each cycle
+        # Generate and upload fresh data each cyc![1755081877455](image/generate_mock_data/1755081877455.png)![1755081884454](image/generate_mock_data/1755081884454.png)le
         echo -e "${YELLOW}🧪 Generating new mock data for this cycle (TOTAL_FILES per type: $TOTAL_FILES)...${NC}"
         generate_price_files
         generate_promotion_files
@@ -583,6 +583,38 @@ start_transfer_loop() {
                 base=\$(basename \"\$f\")
                 [ -f $SFTP_RPM_PROCESSED/\$base ] || cp \"\$f\" $SFTP_RPM_PROCESSED/
             done
+        " >/dev/null 2>&1 || true
+
+        sleep "$interval_seconds"
+    done
+}
+
+# =============================================================================
+# FUNCTION: 10-minute cleanup loop (truncate file contents)
+# =============================================================================
+start_cleanup_loop() {
+    local interval_seconds=240
+    echo -e "${BLUE}🧹 Starting cleanup loop: every 10 minutes (truncate contents in 1P/SOA/RPM)${NC}"
+    while true; do
+        docker exec $DOCKER_CONTAINER bash -lc "
+            set -e
+            shopt -s nullglob
+            # 1P price
+            for f in $SFTP_1P_PRICE/TH_PRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            # 1P promotion
+            for f in $SFTP_1P_PROMOTION/TH_PROMPRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            # 1P feedback
+            for f in ${SFTP_1P_FEEDBACK_PRICE/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            for f in ${SFTP_1P_FEEDBACK_PROMOTION/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            # SOA price/promotion
+            for f in $SFTP_SOA_PRICE/TH_PRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            for f in $SFTP_SOA_PROMOTION/TH_PROMPRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            # SOA feedback
+            for f in ${SFTP_SOA_FEEDBACK_PRICE/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            for f in ${SFTP_SOA_FEEDBACK_PROMOTION/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            # RPM processed & pending
+            for f in $SFTP_RPM_PROCESSED/*; do [ -f \"$f\" ] && : > \"$f\" || true; done
+            for f in $SFTP_RPM_PENDING/*; do [ -f \"$f\" ] && : > \"$f\" || true; done
         " >/dev/null 2>&1 || true
 
         sleep "$interval_seconds"
@@ -631,7 +663,15 @@ main() {
 
     # Optional: start transfer loop (1P → SOA → RPM)
     if [ "$WATCH_MODE" -eq 1 ]; then
-        start_transfer_loop
+        # Run transfer loop in background
+        start_transfer_loop &
+        transfer_pid=$!
+        # Run cleanup loop in background (10 minutes)
+        start_cleanup_loop &
+        cleanup_pid=$!
+        echo -e "${BLUE}🏃 Background loops started: transfer PID=$transfer_pid, cleanup PID=$cleanup_pid${NC}"
+        # Keep main process alive to maintain child jobs
+        wait $transfer_pid $cleanup_pid
     fi
 
     echo -e "${GREEN}🎉 Mock data generation completed successfully!${NC}"
