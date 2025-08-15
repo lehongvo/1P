@@ -105,13 +105,18 @@ fi
 
 # Date handling
 if [ -n "$1" ]; then
+    # Skip processing if this is a source-only invocation
+    if [ "$1" = "--source-only" ]; then
+        INPUT_DATE=$(date +%Y-%m-%d)  # Use current date as default when sourced
     # Parse input date (format: YYYY-MM-DD)
-    if [ "$1" = "--watch" ] || [ "$1" = "-w" ]; then
+    elif [ "$1" = "--watch" ] || [ "$1" = "-w" ]; then
         INPUT_DATE=$(date +%Y-%m-%d)
     else
         INPUT_DATE="$1"
     fi
-    if [[ ! "$INPUT_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+    
+    # Only validate date format if we're not being sourced
+    if [ "$1" != "--source-only" ] && [[ ! "$INPUT_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
         echo "❌ Error: Date format should be YYYY-MM-DD (e.g., 2025-07-31)"
         exit 1
     fi
@@ -537,7 +542,7 @@ show_statistics() {
 # FUNCTION: 2-minute transfer loop (1P → SOA → RPM)
 # =============================================================================
 start_transfer_loop() {
-    local interval_seconds=30
+    local interval_seconds=10
     echo -e "${BLUE}⏱️ Starting transfer loop: every 2 minutes (includes directory checks)${NC}"
     while true; do
         # Ensure directories exist each cycle (Step 1)
@@ -640,5 +645,10 @@ main() {
     echo -e "${BLUE}🚀 Files uploaded to Docker SFTP container for DAG testing${NC}"
 }
 
-# Run main function
-main "$@" 
+# Check if being sourced by another script
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    # Run main function only if not being sourced
+    if [ "${1}" != "--source-only" ]; then
+        main "$@"
+    fi
+fi 
