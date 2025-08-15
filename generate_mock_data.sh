@@ -85,8 +85,8 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     echo -e "${YELLOW}Examples:${NC}"
     echo -e "  $0                # Use current date"
     echo -e "  $0 2025-07-31     # Use specific date"
-    echo -e "  $0 --watch        # Run transfer loop (2-minute interval) after upload"
-    echo -e "  $0 2025-07-31 --watch  # Generate for date and run transfer loop"
+    echo -e "  $0 --watch        # Run transfer loop (10-minute interval) after upload"
+    echo -e "  $0 2025-07-31 --watch  # Generate for date and run transfer loop (10-min intervals)"
     echo -e "  $0 2025-08-15     # Use future date"
     echo -e ""
     echo -e "${BLUE}This script generates mock data for DAG testing:${NC}"
@@ -534,16 +534,36 @@ show_statistics() {
 }
 
 # =============================================================================
-# FUNCTION: 2-minute transfer loop (1P → SOA → RPM)
+# FUNCTION: 10-minute transfer loop (1P → SOA → RPM)
 # =============================================================================
 start_transfer_loop() {
-    local interval_seconds=30
-    echo -e "${BLUE}⏱️ Starting transfer loop: every 2 minutes (includes directory checks)${NC}"
+    local interval_seconds=600
+    echo -e "${BLUE}⏱️ Starting transfer loop: every 10 minutes (includes directory checks)${NC}"
+    # Randomized clear cadence: clear every N cycles, where N ∈ [1,10]
+    local cycles_since_clear=0
+    local clear_threshold=$((1 + RANDOM % 10))
+    echo -e "${YELLOW}🧽 Will clear Docker files every ${clear_threshold} cycle(s) (randomized 1-10)${NC}"
+    # Resolve clear script absolute path once
+    local script_dir
+    script_dir=$(cd "$(dirname "$0")" && pwd)
+    local clear_script="${script_dir}/clear_docker_files.sh"
+    if [ ! -x "$clear_script" ]; then
+        echo -e "${RED}❌ Warning: clear script not executable or not found at: $clear_script${NC}"
+        echo -e "${YELLOW}💡 Ensure the script exists and is executable: chmod +x clear_docker_files.sh${NC}"
+    fi
     while true; do
+        echo -e "${YELLOW}⏰ Starting new cycle at $(date)${NC}"
+        
+        # Clear current local date directory before each cycle
+        local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
+        if [ -d "$date_dir" ]; then
+            echo -e "${YELLOW}🗑️ Clearing local date directory: $date_dir${NC}"
+            rm -rf "$date_dir"
+        fi
         # Ensure directories exist each cycle (Step 1)
         check_and_create_directories
 
-        # Generate and upload fresh data each cyc![1755081877455](image/generate_mock_data/1755081877455.png)![1755081884454](image/generate_mock_data/1755081884454.png)le
+        # Generate and upload fresh data each cycle
         echo -e "${YELLOW}🧪 Generating new mock data for this cycle (TOTAL_FILES per type: $TOTAL_FILES)...${NC}"
         generate_price_files
         generate_promotion_files
@@ -585,6 +605,25 @@ start_transfer_loop() {
             done
         " >/dev/null 2>&1 || true
 
+        echo -e "${GREEN}✅ Cycle completed. Waiting 10 minutes until next cycle...${NC}"
+        echo -e "${BLUE}⏰ Next cycle will start at $(date -d "+10 minutes" 2>/dev/null || date -v+10M 2>/dev/null || echo "in 10 minutes")${NC}"
+        
+        # Increment cycle counter and clear when threshold reached
+        cycles_since_clear=$((cycles_since_clear + 1))
+        if [ "$cycles_since_clear" -ge "$clear_threshold" ]; then
+            echo -e "${YELLOW}🧽 Reached clear threshold (${clear_threshold}). Clearing Docker files now...${NC}"
+            if [ -x "$clear_script" ]; then
+                "$clear_script" --container "$DOCKER_CONTAINER" || echo -e "${RED}❌ Clear script failed${NC}"
+            else
+                echo -e "${RED}❌ Skip clearing: clear script not available${NC}"
+            fi
+            cycles_since_clear=0
+            clear_threshold=$((1 + RANDOM % 10))
+            echo -e "${YELLOW}🎲 Next clear will happen after ${clear_threshold} cycle(s)${NC}"
+        else
+            echo -e "${BLUE}ℹ️ Cycles since last clear: ${cycles_since_clear}/${clear_threshold}${NC}"
+        fi
+
         sleep "$interval_seconds"
     done
 }
@@ -593,9 +632,11 @@ start_transfer_loop() {
 # FUNCTION: 10-minute cleanup loop (truncate file contents)
 # =============================================================================
 start_cleanup_loop() {
-    local interval_seconds=240
+    local interval_seconds=600
     echo -e "${BLUE}🧹 Starting cleanup loop: every 10 minutes (truncate contents in 1P/SOA/RPM)${NC}"
     while true; do
+        echo -e "${YELLOW}🧹 Starting cleanup cycle at $(date)${NC}"
+        
         docker exec $DOCKER_CONTAINER bash -lc "
             set -e
             shopt -s nullglob
@@ -617,6 +658,9 @@ start_cleanup_loop() {
             for f in $SFTP_RPM_PENDING/*; do [ -f \"$f\" ] && : > \"$f\" || true; done
         " >/dev/null 2>&1 || true
 
+        echo -e "${GREEN}✅ Cleanup completed. Waiting 10 minutes until next cleanup...${NC}"
+        echo -e "${BLUE}⏰ Next cleanup will start at $(date -d "+10 minutes" 2>/dev/null || date -v+10M 2>/dev/null || echo "in 10 minutes")${NC}"
+        
         sleep "$interval_seconds"
     done
 }
@@ -666,12 +710,10 @@ main() {
         # Run transfer loop in background
         start_transfer_loop &
         transfer_pid=$!
-        # Run cleanup loop in background (10 minutes)
-        start_cleanup_loop &
-        cleanup_pid=$!
-        echo -e "${BLUE}🏃 Background loops started: transfer PID=$transfer_pid, cleanup PID=$cleanup_pid${NC}"
+        echo -e "${BLUE}🏃 Background loop started: transfer PID=$transfer_pid${NC}"
+        echo -e "${YELLOW}🧽 Cleanup is now controlled randomly inside transfer loop cycles${NC}"
         # Keep main process alive to maintain child jobs
-        wait $transfer_pid $cleanup_pid
+        wait $transfer_pid
     fi
 
     echo -e "${GREEN}🎉 Mock data generation completed successfully!${NC}"
