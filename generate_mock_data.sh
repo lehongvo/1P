@@ -79,14 +79,19 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Handle source-only mode (when included by other scripts)
+if [ "$1" = "--source-only" ]; then
+    return 0
+fi
+
 # Show usage information first
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     echo -e "${YELLOW}Usage: $0 [YYYY-MM-DD]${NC}"
     echo -e "${YELLOW}Examples:${NC}"
     echo -e "  $0                # Use current date"
     echo -e "  $0 2025-07-31     # Use specific date"
-    echo -e "  $0 --watch        # Run transfer loop (2-minute interval) after upload"
-    echo -e "  $0 2025-07-31 --watch  # Generate for date and run transfer loop"
+    echo -e "  $0 --watch        # Run transfer loop (10-minute interval) after upload"
+    echo -e "  $0 2025-07-31 --watch  # Generate for date and run transfer loop (10-min intervals)"
     echo -e "  $0 2025-08-15     # Use future date"
     echo -e ""
     echo -e "${BLUE}This script generates mock data for DAG testing:${NC}"
@@ -105,18 +110,13 @@ fi
 
 # Date handling
 if [ -n "$1" ]; then
-    # Skip processing if this is a source-only invocation
-    if [ "$1" = "--source-only" ]; then
-        INPUT_DATE=$(date +%Y-%m-%d)  # Use current date as default when sourced
     # Parse input date (format: YYYY-MM-DD)
-    elif [ "$1" = "--watch" ] || [ "$1" = "-w" ]; then
+    if [ "$1" = "--watch" ] || [ "$1" = "-w" ]; then
         INPUT_DATE=$(date +%Y-%m-%d)
     else
         INPUT_DATE="$1"
     fi
-    
-    # Only validate date format if we're not being sourced
-    if [ "$1" != "--source-only" ] && [[ ! "$INPUT_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+    if [[ ! "$INPUT_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
         echo "❌ Error: Date format should be YYYY-MM-DD (e.g., 2025-07-31)"
         exit 1
     fi
@@ -232,21 +232,25 @@ generate_price_files() {
             continue
         fi
         
-        # Generate random price data
-        price1=$(echo "scale=2; $RANDOM/100" | bc)
-        price2=$(echo "scale=2; $RANDOM/100" | bc)
-        price3=$(echo "scale=2; $RANDOM/100" | bc)
+        # Generate enough rows to ensure file size > 1MB (minimum requirement)
+        # Create header first
+        echo "Price,Item,Store,Date,Batch,Description" > "$file_path"
         
-        item1="ITEM$(printf '%05d' $((i*3-2)))"
-        item2="ITEM$(printf '%05d' $((i*3-1)))"
-        item3="ITEM$(printf '%05d' $((i*3)))"
+        # Generate approximately 25,000 rows to ensure file size > 1MB
+        for row in $(seq 1 25000); do
+            price=$(echo "scale=2; $RANDOM/100 + 10" | bc)
+            item_id="ITEM$(printf '%08d' $((i*25000 + row)))"
+            store_id="STORE$(printf '%02d' $((RANDOM % 10 + 1)))"
+            batch_id="BATCH_${timestamp}_$(printf '%04d' $row)"
+            description="PRODUCT_DESCRIPTION_$(printf '%08d' $row)_WITH_ADDITIONAL_DATA_TO_INCREASE_FILE_SIZE"
+            
+            echo "$price,$item_id,$store_id,$INPUT_DATE,$batch_id,$description" >> "$file_path"
+        done
         
-        cat > "$file_path" << EOF
-Price,Item,Store,Date,Batch
-$price1,$item1,STORE01,$INPUT_DATE,$timestamp
-$price2,$item2,STORE01,$INPUT_DATE,$timestamp
-$price3,$item3,STORE02,$INPUT_DATE,$timestamp
-EOF
+        # Verify file size after generation
+        file_size_bytes=$(stat -c%s "$file_path" 2>/dev/null || echo "0")
+        file_size_mb=$(echo "scale=2; $file_size_bytes/1024/1024" | bc)
+        echo -e "${GREEN}  Generated: $file_name (${file_size_mb}MB)${NC}"
         
         if [ $((i % 20)) -eq 0 ]; then
             echo -e "${YELLOW}  Generated $i/$TOTAL_FILES price files...${NC}"
@@ -285,16 +289,6 @@ generate_promotion_files() {
             continue
         fi
         
-        # Generate random promotion data
-        promo1="PROMO$(printf '%05d' $((i*2-1)))"
-        promo2="PROMO$(printf '%05d' $((i*2)))"
-        
-        item1="ITEM$(printf '%05d' $((i*2-1)))"
-        item2="ITEM$(printf '%05d' $((i*2)))"
-        
-        discount1=${discounts[$((RANDOM % ${#discounts[@]}))]}
-        discount2=${discounts[$((RANDOM % ${#discounts[@]}))]}
-        
         # Generate random end date (7-30 days from start date)
         days_to_add=$((7 + RANDOM % 24))
         if [ "$(detect_os)" = "macos" ]; then
@@ -303,11 +297,25 @@ generate_promotion_files() {
             end_date=$(date -d "$INPUT_DATE + $days_to_add days" +%Y-%m-%d)
         fi
         
-        cat > "$file_path" << EOF
-PromoID,Item,Discount,StartDate,EndDate,Batch
-$promo1,$item1,$discount1,$INPUT_DATE,$end_date,$timestamp
-$promo2,$item2,$discount2,$INPUT_DATE,$end_date,$timestamp
-EOF
+        # Generate enough rows to ensure file size > 1MB (minimum requirement)
+        # Create header first
+        echo "PromoID,Item,Discount,StartDate,EndDate,Batch,Description" > "$file_path"
+        
+        # Generate approximately 20,000 rows to ensure file size > 1MB
+        for row in $(seq 1 20000); do
+            promo_id="PROMO$(printf '%08d' $((i*20000 + row)))"
+            item_id="ITEM$(printf '%08d' $((i*20000 + row)))"
+            discount=${discounts[$((RANDOM % ${#discounts[@]}))]}
+            batch_id="BATCH_${timestamp}_$(printf '%04d' $row)"
+            description="PROMOTION_DESCRIPTION_$(printf '%08d' $row)_WITH_ADDITIONAL_DATA_TO_INCREASE_FILE_SIZE"
+            
+            echo "$promo_id,$item_id,$discount,$INPUT_DATE,$end_date,$batch_id,$description" >> "$file_path"
+        done
+        
+        # Verify file size after generation
+        file_size_bytes=$(stat -c%s "$file_path" 2>/dev/null || echo "0")
+        file_size_mb=$(echo "scale=2; $file_size_bytes/1024/1024" | bc)
+        echo -e "${GREEN}  Generated: $file_name (${file_size_mb}MB)${NC}"
         
         if [ $((i % 20)) -eq 0 ]; then
             echo -e "${YELLOW}  Generated $i/$TOTAL_FILES promotion files...${NC}"
@@ -346,22 +354,23 @@ generate_feedback_price_files() {
             continue
         fi
         
-        # Generate feedback data
-        fb_id1="FB$(printf '%05d' $((i*3-2)))"
-        fb_id2="FB$(printf '%05d' $((i*3-1)))"
-        fb_id3="FB$(printf '%05d' $((i*3)))"
+        # Generate enough rows to ensure file size > 1MB (minimum requirement)
+        # Create header first
+        echo "feedback_id,status,processed_time" > "$file_path"
         
         statuses=("SUCCESS" "SUCCESS" "SUCCESS" "DELAYED" "FAILED")
-        status1=${statuses[$((RANDOM % ${#statuses[@]}))]}
-        status2=${statuses[$((RANDOM % ${#statuses[@]}))]}
-        status3=${statuses[$((RANDOM % ${#statuses[@]}))]}
         
-        cat > "$file_path" << EOF
-feedback_id,status,processed_time
-$fb_id1,$status1,$INPUT_DATE $(printf "%02d:%02d:%02d" $hour $minute $second)
-$fb_id2,$status2,$INPUT_DATE $(printf "%02d:%02d:%02d" $hour $minute $((second+15)))
-$fb_id3,$status3,$INPUT_DATE $(printf "%02d:%02d:%02d" $hour $minute $((second+30)))
-EOF
+        # Generate approximately 18,000 rows to ensure file size > 1MB
+        for row in $(seq 1 18000); do
+            fb_id="FB$(printf '%08d' $((i*18000 + row)))"
+            status=${statuses[$((RANDOM % ${#statuses[@]}))]}
+            processed_hour=$((5 + RANDOM % 8))
+            processed_minute=$((RANDOM % 60))
+            processed_second=$((RANDOM % 60))
+            processed_time="$INPUT_DATE $(printf "%02d:%02d:%02d" $processed_hour $processed_minute $processed_second)"
+            
+            echo "$fb_id,$status,$processed_time" >> "$file_path"
+        done
         
         if [ $((i % 20)) -eq 0 ]; then
             echo -e "${YELLOW}  Generated $i/$TOTAL_FILES feedback price files...${NC}"
@@ -396,22 +405,23 @@ generate_feedback_promotion_files() {
             continue
         fi
         
-        # Generate feedback data
-        fb_id1="FBP$(printf '%05d' $((i*3-2)))"
-        fb_id2="FBP$(printf '%05d' $((i*3-1)))"
-        fb_id3="FBP$(printf '%05d' $((i*3)))"
+        # Generate enough rows to ensure file size > 1MB (minimum requirement)
+        # Create header first
+        echo "feedback_id,status,processed_time" > "$file_path"
         
         statuses=("SUCCESS" "SUCCESS" "SUCCESS" "DELAYED" "FAILED")
-        status1=${statuses[$((RANDOM % ${#statuses[@]}))]}
-        status2=${statuses[$((RANDOM % ${#statuses[@]}))]}
-        status3=${statuses[$((RANDOM % ${#statuses[@]}))]}
         
-        cat > "$file_path" << EOF
-feedback_id,status,processed_time
-$fb_id1,$status1,$INPUT_DATE $(printf "%02d:%02d:%02d" $hour $minute $second)
-$fb_id2,$status2,$INPUT_DATE $(printf "%02d:%02d:%02d" $hour $minute $((second+15)))
-$fb_id3,$status3,$INPUT_DATE $(printf "%02d:%02d:%02d" $hour $minute $((second+30)))
-EOF
+        # Generate approximately 18,000 rows to ensure file size > 1MB
+        for row in $(seq 1 18000); do
+            fb_id="FBP$(printf '%08d' $((i*18000 + row)))"
+            status=${statuses[$((RANDOM % ${#statuses[@]}))]}
+            processed_hour=$((6 + RANDOM % 7))
+            processed_minute=$((RANDOM % 60))
+            processed_second=$((RANDOM % 60))
+            processed_time="$INPUT_DATE $(printf "%02d:%02d:%02d" $processed_hour $processed_minute $processed_second)"
+            
+            echo "$fb_id,$status,$processed_time" >> "$file_path"
+        done
         
         if [ $((i % 20)) -eq 0 ]; then
             echo -e "${YELLOW}  Generated $i/$TOTAL_FILES feedback promotion files...${NC}"
@@ -539,12 +549,32 @@ show_statistics() {
 }
 
 # =============================================================================
-# FUNCTION: 2-minute transfer loop (1P → SOA → RPM)
+# FUNCTION: 10-minute transfer loop (1P → SOA → RPM)
 # =============================================================================
 start_transfer_loop() {
-    local interval_seconds=10
-    echo -e "${BLUE}⏱️ Starting transfer loop: every 2 minutes (includes directory checks)${NC}"
+    local interval_seconds=1000000000
+    echo -e "${BLUE}⏱️ Starting transfer loop: every 10 minutes (includes directory checks)${NC}"
+    # Randomized clear cadence: clear every N cycles, where N ∈ [1,10]
+    local cycles_since_clear=0
+    local clear_threshold=$((1 + RANDOM % 10))
+    echo -e "${YELLOW}🧽 Will clear Docker files every ${clear_threshold} cycle(s) (randomized 1-10)${NC}"
+    # Resolve clear script absolute path once
+    local script_dir
+    script_dir=$(cd "$(dirname "$0")" && pwd)
+    local clear_script="${script_dir}/clear_docker_files.sh"
+    if [ ! -x "$clear_script" ]; then
+        echo -e "${RED}❌ Warning: clear script not executable or not found at: $clear_script${NC}"
+        echo -e "${YELLOW}💡 Ensure the script exists and is executable: chmod +x clear_docker_files.sh${NC}"
+    fi
     while true; do
+        echo -e "${YELLOW}⏰ Starting new cycle at $(date)${NC}"
+        
+        # Clear current local date directory before each cycle
+        local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
+        if [ -d "$date_dir" ]; then
+            echo -e "${YELLOW}🗑️ Clearing local date directory: $date_dir${NC}"
+            rm -rf "$date_dir"
+        fi
         # Ensure directories exist each cycle (Step 1)
         check_and_create_directories
 
@@ -590,6 +620,62 @@ start_transfer_loop() {
             done
         " >/dev/null 2>&1 || true
 
+        echo -e "${GREEN}✅ Cycle completed. Waiting 10 minutes until next cycle...${NC}"
+        echo -e "${BLUE}⏰ Next cycle will start at $(date -d "+10 minutes" 2>/dev/null || date -v+10M 2>/dev/null || echo "in 10 minutes")${NC}"
+        
+        # Increment cycle counter and clear when threshold reached
+        cycles_since_clear=$((cycles_since_clear + 1))
+        if [ "$cycles_since_clear" -ge "$clear_threshold" ]; then
+            echo -e "${YELLOW}🧽 Reached clear threshold (${clear_threshold}). Clearing Docker files now...${NC}"
+            if [ -x "$clear_script" ]; then
+                "$clear_script" --container "$DOCKER_CONTAINER" || echo -e "${RED}❌ Clear script failed${NC}"
+            else
+                echo -e "${RED}❌ Skip clearing: clear script not available${NC}"
+            fi
+            cycles_since_clear=0
+            clear_threshold=$((1 + RANDOM % 10))
+            echo -e "${YELLOW}🎲 Next clear will happen after ${clear_threshold} cycle(s)${NC}"
+        else
+            echo -e "${BLUE}ℹ️ Cycles since last clear: ${cycles_since_clear}/${clear_threshold}${NC}"
+        fi
+
+        sleep "$interval_seconds"
+    done
+}
+
+# =============================================================================
+# FUNCTION: 10-minute cleanup loop (truncate file contents)
+# =============================================================================
+start_cleanup_loop() {
+    local interval_seconds=600
+    echo -e "${BLUE}🧹 Starting cleanup loop: every 10 minutes (truncate contents in 1P/SOA/RPM)${NC}"
+    while true; do
+        echo -e "${YELLOW}🧹 Starting cleanup cycle at $(date)${NC}"
+        
+        docker exec $DOCKER_CONTAINER bash -lc "
+            set -e
+            shopt -s nullglob
+            # 1P price
+            for f in $SFTP_1P_PRICE/TH_PRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            # 1P promotion
+            for f in $SFTP_1P_PROMOTION/TH_PROMPRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            # 1P feedback
+            for f in ${SFTP_1P_FEEDBACK_PRICE/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            for f in ${SFTP_1P_FEEDBACK_PROMOTION/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            # SOA price/promotion
+            for f in $SFTP_SOA_PRICE/TH_PRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            for f in $SFTP_SOA_PROMOTION/TH_PROMPRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
+            # SOA feedback
+            for f in ${SFTP_SOA_FEEDBACK_PRICE/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            for f in ${SFTP_SOA_FEEDBACK_PROMOTION/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
+            # RPM processed & pending
+            for f in $SFTP_RPM_PROCESSED/*; do [ -f \"$f\" ] && : > \"$f\" || true; done
+            for f in $SFTP_RPM_PENDING/*; do [ -f \"$f\" ] && : > \"$f\" || true; done
+        " >/dev/null 2>&1 || true
+
+        echo -e "${GREEN}✅ Cleanup completed. Waiting 10 minutes until next cleanup...${NC}"
+        echo -e "${BLUE}⏰ Next cleanup will start at $(date -d "+10 minutes" 2>/dev/null || date -v+10M 2>/dev/null || echo "in 10 minutes")${NC}"
+        
         sleep "$interval_seconds"
     done
 }
@@ -636,7 +722,13 @@ main() {
 
     # Optional: start transfer loop (1P → SOA → RPM)
     if [ "$WATCH_MODE" -eq 1 ]; then
-        start_transfer_loop
+        # Run transfer loop in background
+        start_transfer_loop &
+        transfer_pid=$!
+        echo -e "${BLUE}🏃 Background loop started: transfer PID=$transfer_pid${NC}"
+        echo -e "${YELLOW}🧽 Cleanup is now controlled randomly inside transfer loop cycles${NC}"
+        # Keep main process alive to maintain child jobs
+        wait $transfer_pid
     fi
 
     echo -e "${GREEN}🎉 Mock data generation completed successfully!${NC}"
@@ -645,10 +737,5 @@ main() {
     echo -e "${BLUE}🚀 Files uploaded to Docker SFTP container for DAG testing${NC}"
 }
 
-# Check if being sourced by another script
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    # Run main function only if not being sourced
-    if [ "${1}" != "--source-only" ]; then
-        main "$@"
-    fi
-fi 
+# Run main function
+main "$@" 
