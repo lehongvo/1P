@@ -1,4 +1,0 @@
-feedback_id,status,processed_time,extra_column1,extra_column2
-FBP00001,SUCCESS,2025-08-14 09:59:26,extra1,extra2
-FBP00002,FAILED,2025-08-14 09:59:41,extra3,extra4
-FBP00003,SUCCESS,2025-08-14 09:59:56,extra5,extra6
