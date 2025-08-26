@@ -1,0 +1,107 @@
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+import orderRoutes from './routes/orderRoutes';
+import cron from 'node-cron';
+import { OrderService } from './services/orderService';
+import { OrderStatus } from './types';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middleware
+app.use(helmet());
+app.use(cors());
+app.use(morgan('combined'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use('/api/v1', orderRoutes);
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    service: 'Phoenix OMS',
+    version: '1.0.0',
+    description: 'Order Management System for LOTUS O2O',
+    endpoints: {
+      health: '/api/v1/health',
+      orders: '/api/v1/orders',
+      seedMockData: '/api/v1/seed-mock-data'
+    }
+  });
+});
+
+// Error handling middleware
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    error: 'Something went wrong!'
+  });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    error: 'Endpoint not found'
+  });
+});
+
+// Auto-advance cron (every 30 seconds)
+const terminalStatuses: OrderStatus[] = ['COMPLETE','CLOSED','CANCELED','FRAUD'];
+const progression: OrderStatus[] = [
+  'PENDING',
+  'PENDING_PAYMENT',
+  'PAYMENT_REVIEW',
+  'PROCESSING',
+  'SHIPPING',
+  'COMPLETE',
+  'CLOSED'
+];
+
+const service = new OrderService();
+
+cron.schedule('*/30 * * * * *', async () => {
+  try {
+    const inProgress = await (async () => {
+      const result = await service.getOrders(500, 0);
+      return result.filter(o => !terminalStatuses.includes(o.status));
+    })();
+
+    for (const order of inProgress) {
+      // 3% branch to exception (CANCELED/FRAUD), 97% follow standard progression
+      const r = Math.random();
+      if (r < 0.03) {
+        const exception: OrderStatus = Math.random() < 0.5 ? 'CANCELED' : 'FRAUD';
+        await service.updateOrderStatus(order.order_id, exception, 'Auto-exception by OMS cron (3%)');
+        continue;
+      }
+
+      const currentIndex = progression.indexOf(order.status);
+      if (currentIndex === -1) {
+        continue;
+      }
+      const next = progression[Math.min(currentIndex + 1, progression.length - 1)];
+      if (next !== order.status) {
+        await service.updateOrderStatus(order.order_id, next, 'Auto-advanced by OMS cron (97%)');
+      }
+    }
+  } catch (e) {
+    console.error('Auto-advance cron error:', e);
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Phoenix OMS server running on port ${PORT}`);
+  console.log(`📊 Health check: http://localhost:${PORT}/api/v1/health`);
+  console.log(`📦 Orders API: http://localhost:${PORT}/api/v1/orders`);
+  console.log(`🌱 Seed mock data: http://localhost:${PORT}/api/v1/seed-mock-data`);
+  console.log('⏰ OMS auto-advance cron: every 30 seconds (97% main path, 3% exception)');
+});

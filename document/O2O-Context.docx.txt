@@ -1,0 +1,294 @@
+﻿LOTUS'S-O2O System Monitoring Dashboard
+1. SYSTEM CONTEXT
+1.1 Overview
+The LOTUS'S-O2O project creates a unified monitoring platform connecting Phoenix OMS with downstream operational services. This ecosystem enables end-to-end order processing from initial customer order placement through fulfillment, invoicing, stock management, and delivery execution.
+1.2 Problem to solve
+Develop a Monitoring solution to track the Order Flow from Phoenix OMS to  downstream systems, ensuring transparency, early error detection, and timely alerts for  failures or delays
+Requirement 
+	Description 
+	Track Order Messages 
+	The system must be able to monitor the status of each order  data transmission from Phoenix OMS.
+	Status Classification 
+	The system must classify status  into: Success, Failed, and Delayed.
+	Dashboard 
+	Provide a real-time dashboard to  visualize overall status and individual order tracking.
+	Alert Notification 
+	Send alerts via email or integrated  alerting tools in case of failures or  delays beyond threshold.
+	
+
+1.3 Key System Components
+Phoenix OMS (Primary Source): Central order management and processing hub
+* Receive orders from website/app
+* Store customer information and order details
+* Create order ID and tracking number
+* Send order data to other systems for processing                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Phoenix Commerce Engine: Core business logic and order validation service
+* Check if inventory is sufficient
+* Validate pricing and promotions
+* Check customer eligibility
+* Decide if order can be fulfilled
+Downstream Services Portfolio:
+* Checkout Services: Payment processing and order confirmation
+* Invoice Service: Automated billing and financial documentation
+* Stock Services: Inventory management and availability tracking, 
+* Delivery Management: Instore app, Rider App, Hijump app, Loginext integration
+1.4 Architecture Overview
+  
+
+2. BUSINESS OBJECTIVES
+Business outcome: Ensure stable, reliable, and accurate order processing so that downstream systems (fulfillment, invoicing, stock, delivery) run smoothly, reducing order loss/complaints
+* Reliability: Deliver consistent, predictable order processing with proactive detection and timely remediation of incidents.
+* Transparency: provide real‑time dashboards with per‑order traceability, clear Success/Failed/Delayed classification, and drill‑down by date, channel, and system.
+* Revenue Assurance: minimize failed or late orders by catching anomalies early in the flow; prevent revenue leakage and avoid chargebacks.
+* Data Consistency & Compliance: detect and alert on mismatches between OMS and downstream systems; maintain auditable history for investigation and governance.
+________________
+3. POC STATUS
+3.1 Current State Overview[Solution and flow]
+Component
+	Completion %
+	Status
+	Dependencies
+	Architecture & Flow Design
+	90%
+	Need To Confirm
+	Need to confirm method get Order Data between Phoenix OMS to Phoenix Commerce Engine 
+	Business Logic
+	90%
+	Need To Confirm
+	Need to determine the reliability of the requirement documentation
+	Mock Data Framework
+	50%
+	In Progress
+	Mock with only 3 order status( Success / Failed / Delayed)
+	DAG Implementation
+	80%
+	In Progress
+	None
+	Integration Testing
+	25%
+	In Progress
+	None
+	Production Deployment
+	0%
+	Pending
+	Not access to UTA Env yet
+	3.2 Mapping Status Order  => need confirm 
+Status
+	Dependencies
+	Mapping Status
+	Explanation
+	PENDING
+	New order has been created and is awaiting initial processing
+	Delayed
+	Order is waiting to be processed, not completed yet but not failed either
+	PENDING_PAYMENT
+	Order is waiting for customer payment confirmation
+	Delayed
+	Waiting for payment, process can still continue
+	PROCESSING
+	Order is currently being processed and prepared
+	Delayed
+	Currently being processed, not yet completed
+Logic: local_time - end_time_processing < delay_threshhold_processing
+	COMPLETE
+	Order has been successfully completed and fulfilled
+	Success
+	Order has been successfully completed
+	CLOSED
+	Order has been closed and finalized
+	Success
+	Order has been closed, considered as completed
+	CANCELED
+	Order has been canceled and will not be processed
+	Failed
+	Order has been canceled, cannot continue
+	HOLDED
+	Order is temporarily on hold pending further action
+	Delayed
+	Temporarily on hold, can continue later
+	PAYMENT_REVIEW
+	Payment is under review for verification and approval
+	Delayed
+	Payment under review, final decision not made yet
+Logic: local_time - end_time_payment_review < delay_threshold_payment_review
+	FRAUD
+	Order is flagged as potentially fraudulent and requires investigation
+	Failed
+	Suspected fraud, order will not be processed
+	SHIPPING
+	Order is currently in shipping/delivery process
+	Delayed
+	Currently shipping, delivery not yet completed
+Logic: local_time - end_time_shipping < delay_threshold_shipping
+	3.3 Rule Alert => need confirm 
+Team
+	Alert Rule
+	Alert Condition
+	Trigger
+	Priority
+	Operations Team
+	Order Failed Alert
+	If any order fails
+	Immediately
+	High
+	Operations Team
+	Too Many Failures/Delay
+	If more than 5% of orders failed/delayed in 10 minutes
+	Every 10 minutes
+	High
+	Operations Team
+	No Orders Received
+	If no new orders in the last 5 minutes
+	Every 5 minutes
+	Medium
+	Operations Team
+	Order Processing Delay
+	If local_time - end_time < delay_threshold
+	Immediately
+	High
+	Development Team
+	Slow Processing
+	If order processing time > delay_threshold
+	Immediate
+	High
+	Development Team
+	System Not Sending Logs/Metrics
+	If the system is silent for 10 minutes
+	Continuous monitoring
+	Medium
+	Management / Business Stakeholders
+	Low Success Rate
+	If success rate < threshold_success_rate  for the day
+	Daily check
+	High
+	Management / Business Stakeholders
+	Incident Summary
+	After a major issue is resolved
+	On resolution
+	Medium
+	Management / Business Stakeholders
+	Aggregated data and reports
+	When a summary is requested
+	On resolution
+	Medium
+	
+
+3.4 Processing
+* Executing happy case tests initially to verify that the logic functions properly (Order, DAGs, Airflow, Grafana)
+* Initialize DAG pipelines and review task execution logs in Airflow. 
+* Monitor real-time data flow metrics and dashboard analytics in Grafana.
+3.4 Remaining
+* If status of real order is different with current requirement, we need update logic code
+* Read data from source(base on data flow)
+* Need to confirm rule Alert Notification.
+3.5 Blockers
+* Need to determine which method (API/Webhook/Event Logs…) is suitable for retrieving Order data from Phoenix OMS to Phoenix Commerce Engine.
+3.6 Additional Requirements
+* Order status state machine and transition mapping documentation required
+* Technical specification needed for data flow architecture and business logic governing data transfer/persistence from Phoenix OMS to Phoenix Commerce Engine
+* Need to define rule Alert Notification for specification updates,changes, and documentation revision approvals.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4. STRATEGIC DEVELOPMENT ROADMAP
+4.1 Phase 1: Immediate Actions & Quick Wins (1-5 Weeks)
+Objective: Complete POC and establish production readiness foundation
+Week 1: Data capture flow review & track order messages
+* Analyze the architecture of Phoenix OMS and Phoenix Commerce Engine.
+* Identify data entry and exit points for order transmission.
+* Configure and reuse Airflow/Mimir/Grafana/Prometheus infrastructure for this monitoring workflows
+* Design tracking logic based on Order ID and timestamp. 
+* Create a database/table/schema to store order statuses and cross-system order ID reconciliation 
+* Log success/failure/Delayed for each order(Setup status history tracking and audit logs).
+* Implement Airflow tasks to collect and match order IDs across systems
+Week 2: Status classification and dashboard
+* Define classification criteria: Success / Failed / Delayed. 
+* Configure delay threshold (e.g., > 30 seconds). Update order status accordingly in the database. 
+* Design dashboard: charts, data tables, filters (by date, status, channel). Connect dashboard to live data source. 
+* Implement filtering system (date, status, channel) and Configure variables Implement user authentication and role-based access Create Grafana time series visualizations for transmission success rates
+Week 3: System Monitoring and alert notification
+* Configure Prometheus metrics for data transmission tracking 
+* Set up Prometheus collectors for system response times Design alert rules (based on Failed or Delayed status or Error...). 
+* Configure email/Slack alerts or integrate with alerting tools. 
+* Configuring variable alert thresholds. 
+* Configure Prometheus alerting rules for system timeout detection Configure Grafana alert rules for data mismatch thresholds Set up notification routing based on mismatch types
+Week 4:Data quality, define and apply rule and scenario testing
+* Implement data validation and quality checks 
+* Set up comprehensive error handling and recovery
+* Define rule  alert notification in prometheus
+* Write full scenario testing to end to end flow
+Week 5: Request approve deployment and deployment
+4.2 Phase 2: Full-Scale Integration & Observability
+Objective:  Scale monitoring to all components and optimize end‑to‑end observability in one consolidated phase(Checkout, Invoice, Instore, Highjump, LogiNext, AN Rider App).
+Scope:Detailed integration task breakdown (per target system)
+1: Integration readiness
+* Confirm API endpoints, auth, rate limits, payload schemas, align error codes.
+* Provision credentials or secrets UTA/PROD
+* Define order and status mapping and correlation keys (orderId, extRef, timestamps).
+2: Airflow ingestion
+* Create and extend DAG for OMS => target polling/webhook
+* Emit processing logs and technical events for audit/ELK.
+3: Metrics & instrumentation
+* Expose Prometheus metrics: deliveries, success, failed and delayed counts, latency percentiles
+* Standardize metric labels
+4: Dashboards & alerts
+* Grafana: overview panel, per‑order trace table, role‑based views.
+* Alerts: delivery failure, delay threshold breach, API health, mismatch detected, no‑orders received, too many failures.
+5: Data correlation & quality
+* End‑to‑end reconciliation OMS <=> target; mismatch rules (status, totals, timestamps).
+* Freshness checks and anomaly detection; dead‑letter handling and reprocessing playbook.
+
+
+Priorities
+* Priority 1: Checkout services monitoring integration
+* Priority 2: Invoice service monitoring activation
+* Priority 3: Instore, Highjump, LogiNext, AN Rider App monitoring
+4.3 Phase 3: Packaging & Sell to other enterprises:
+Objective:  Package the monitoring solution to sell to other companies, creating new business opportunities.
+Scope: Make the solution ready for external enterprises
+1: Make the solution ready for other enterprises
+* Create templates that can work for different types of businesses
+* Make it easy to connect with common business/integration systems
+* Create simple setup process for new customers
+2: List common features for multiple businesses and define a standard presale flow.
+* Keep each customer's data separate and secure
+* Let customers use their own login systems
+* Create reports that customers can export
+* Set up alerts and rule that customers can customize
+* Monitor system performance and guarantee uptime
+3: Build the technical foundation
+* Use containers to deploy easily
+* Separate data for each customer
+* Scale automatically when needed
+* Backup and protect customer data
+4: Prepare docs so dev teams can easily maintain and upgrade."
+* Simple setup process for new customers
+* Pre-built connections for common systems
+* Professional help for complex setups
+* Regular check-ins and optimization help
+5. SUMMARY
+* Solution: Unified monitoring for OMS → downstream; transparent tracking, early error detection, and timely alerts; protects revenue and improves customer experience.
+* Feasibility (POC): Feasible on the current stack (Airflow, Prometheus/Mimir, Grafana).
+* Key dependencies: Integration specification, ingestion method, and state‑machine mapping.
+* Risk mitigation: Start with a mocked feed plus an adapter layer.
+* Applicability: Immediate value for OMS → Commerce; extendable to Checkout, Invoice, Instore, Highjump, LogiNext.
+* Presales readiness: Demo with simulated orders, dashboards, and alert flows; collateral (one‑pager, deck, reference architecture); packaging options (Basic/Pro/Enterprise); next steps: schedule demo, align success criteria, define pilot scope.
