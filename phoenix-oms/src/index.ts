@@ -12,6 +12,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const DATA_API_KEY = '0x9f299A715cb6aF84e93ba90371538Ddf130E1ec0021hf902';
 
 // Middleware
 app.use(helmet());
@@ -19,6 +20,17 @@ app.use(cors());
 app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// API key middleware for all /api/v1 except /api/v1/health
+app.use('/api/v1', (req, res, next) => {
+  if (req.path === '/health') return next();
+  const headerKey = req.header('x-api-key') || req.header('authorization') || '';
+  const token = headerKey.replace(/^Bearer\s+/i, '').trim();
+  if (token !== DATA_API_KEY) {
+    return res.status(401).json({ success: false, code: 'UNAUTHORIZED', error: 'Invalid API key' });
+  }
+  return next();
+});
 
 // Routes
 app.use('/api/v1', orderRoutes);
@@ -88,7 +100,7 @@ cron.schedule('*/30 * * * * *', async () => {
   try {
     const inProgress = await (async () => {
       const result = await service.getOrders(500, 0);
-      return result.filter(o => !terminalStatuses.includes(o.status));
+      return result.filter((o: any) => !terminalStatuses.includes(o.status));
     })();
 
     for (const order of inProgress) {

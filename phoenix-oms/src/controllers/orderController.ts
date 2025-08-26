@@ -20,14 +20,25 @@ export class OrderController {
   async getRecentForMonitoring(req: Request, res: Response): Promise<void> {
     try {
       if (!this.isAuthorized(req)) {
-        res.status(401).json({ success: false, error: 'Unauthorized' });
+        res.status(401).json({ success: false, code: 'UNAUTHORIZED', error: 'Unauthorized' });
         return;
       }
-      const rows = await this.orderService.getRecentOrdersWithItems(60); // last 60 minutes
-      const response: ApiResponse<any> = { success: true, data: rows };
+      const minutes = req.query.minutes ? Math.max(1, Math.min(1440, parseInt(String(req.query.minutes), 10))) : 60;
+      const limit = req.query.limit ? Math.max(1, Math.min(5000, parseInt(String(req.query.limit), 10))) : 1000;
+
+      const { rows, total, statusCounts } = await this.orderService.getRecentOrdersSummary(minutes, limit);
+      const response = {
+        success: true,
+        code: 'OK',
+        windowMinutes: minutes,
+        limit,
+        total,
+        statusCounts,
+        data: rows
+      };
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
+      res.status(500).json({ success: false, code: 'INTERNAL_ERROR', error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 

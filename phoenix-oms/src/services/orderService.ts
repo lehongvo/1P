@@ -3,7 +3,67 @@ import pool from '../database/connection';
 import { Order, OrderStatus, CreateOrderRequest, OrderType } from '../types';
 
 export class OrderService {
+  async ensureSchema(): Promise<void> {
+    // Create types and tables if they do not exist
+    await pool.query(`
+      DO $$ BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'order_type') THEN
+          CREATE TYPE order_type AS ENUM ('ONLINE','OFFLINE','INSTORE','MARKETPLACE','CALLCENTER');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'order_status') THEN
+          CREATE TYPE order_status AS ENUM ('PENDING','PENDING_PAYMENT','PROCESSING','COMPLETE','CLOSED','CANCELED','HOLDED','PAYMENT_REVIEW','FRAUD','SHIPPING');
+        END IF;
+      END $$;
+
+      CREATE TABLE IF NOT EXISTS items (
+        id SERIAL PRIMARY KEY,
+        item_id INTEGER UNIQUE NOT NULL,
+        name VARCHAR(200) NOT NULL,
+        detail TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS orders (
+        id SERIAL PRIMARY KEY,
+        order_id VARCHAR(50) UNIQUE NOT NULL,
+        customer_id VARCHAR(50) NOT NULL,
+        customer_name VARCHAR(100) NOT NULL,
+        customer_email VARCHAR(100) NOT NULL,
+        customer_phone VARCHAR(20),
+        total_amount DECIMAL(10,2) NOT NULL,
+        currency VARCHAR(3) DEFAULT 'VND',
+        order_type order_type NOT NULL DEFAULT 'ONLINE',
+        status order_status NOT NULL DEFAULT 'PENDING',
+        item_id INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        payment_method VARCHAR(50),
+        shipping_address TEXT,
+        tracking_number VARCHAR(100),
+        notes TEXT,
+        CONSTRAINT fk_orders_item_id FOREIGN KEY (item_id) REFERENCES items(item_id)
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+      CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
+      CREATE INDEX IF NOT EXISTS idx_orders_order_type ON orders(order_type);
+      CREATE INDEX IF NOT EXISTS idx_orders_item_id ON orders(item_id);
+
+      CREATE OR REPLACE FUNCTION update_updated_at_column() RETURNS TRIGGER AS $$
+      BEGIN NEW.updated_at = CURRENT_TIMESTAMP; RETURN NEW; END; $$ LANGUAGE plpgsql;
+
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_trigger WHERE tgname = 'update_orders_updated_at'
+        ) THEN
+          CREATE TRIGGER update_orders_updated_at BEFORE UPDATE ON orders FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+        END IF;
+      END $$;
+    `);
+  }
+
   async ensureItemsSeeded(): Promise<void> {
+    await this.ensureSchema();
     const countRes = await pool.query('SELECT COUNT(*)::int as count FROM items');
     const count = countRes.rows[0]?.count || 0;
     if (count >= 100) return;
@@ -142,7 +202,6 @@ export class OrderService {
         o.order_type,
         o.total_amount,
         o.updated_at,
-        o.item_id,
         i.name as item_name,
         i.detail as item_detail
       FROM orders o
@@ -155,6 +214,52 @@ export class OrderService {
     return result.rows;
   }
 
+  async getRecentOrdersSummary(lastMinutes: number = 60, limit: number = 1000): Promise<{ rows: any[]; total: number; statusCounts: Record<string, number>; }> {
+    const rowsQuery = `
+      SELECT 
+        o.order_id,
+        o.customer_id,
+        o.customer_name,
+        o.status,
+        o.order_type,
+        o.total_amount,
+        o.updated_at,
+        i.name as item_name,
+        i.detail as item_detail
+      FROM orders o
+      LEFT JOIN items i ON o.item_id = i.item_id
+      WHERE o.updated_at >= NOW() - INTERVAL '${lastMinutes} minutes'
+      ORDER BY o.updated_at DESC
+      LIMIT ${limit}
+    `;
+
+    const countQuery = `
+      SELECT COUNT(*)::int as total
+      FROM orders o
+      WHERE o.updated_at >= NOW() - INTERVAL '${lastMinutes} minutes'
+    `;
+
+    const statusAggQuery = `
+      SELECT o.status, COUNT(*)::int as count
+      FROM orders o
+      WHERE o.updated_at >= NOW() - INTERVAL '${lastMinutes} minutes'
+      GROUP BY o.status
+    `;
+
+    const [rowsRes, totalRes, statusRes] = await Promise.all([
+      pool.query(rowsQuery),
+      pool.query(countQuery),
+      pool.query(statusAggQuery)
+    ]);
+
+    const statusCounts: Record<string, number> = {};
+    for (const r of statusRes.rows) {
+      statusCounts[r.status] = r.count;
+    }
+
+    return { rows: rowsRes.rows, total: totalRes.rows[0]?.total || 0, statusCounts };
+  }
+
   async generateMockOrders(count: number = 2): Promise<Order[]> {
     const mockOrders: Order[] = [];
 
@@ -162,13 +267,28 @@ export class OrderService {
 
     const customerNames = [
       'Nguyen Van A', 'Tran Thi B', 'Le Van C', 'Pham Thi D', 'Hoang Van E',
-      'Vu Thi F', 'Do Van G', 'Bui Thi H', 'Dang Van I', 'Ngo Thi K'
+      'Vu Thi F', 'Do Van G', 'Bui Thi H', 'Dang Van I', 'Ngo Thi K',
+      'Nguyen Thi L', 'Tran Van M', 'Le Van N', 'Pham Van O', 'Hoang Van P',
+      'Vu Van Q', 'Do Van R', 'Bui Van S', 'Dang Van T', 'Ngo Van U',
+      'Nguyen Thi V', 'Tran Van W', 'Le Van X', 'Pham Van Y', 'Hoang Van Z',
+      'Vu Van AA', 'Do Van BB', 'Bui Van CC', 'Dang Van DD', 'Ngo Van EE',
+      'Nguyen Thi FF', 'Tran Van GG', 'Le Van HH', 'Pham Van II', 'Hoang Van JJ',
+      'Vu Van KK', 'Do Van LL', 'Bui Van MM', 'Dang Van NN', 'Ngo Van OO',
+      'Nguyen Thi PP', 'Tran Van QQ', 'Le Van RR', 'Pham Van SS', 'Hoang Van TT',
+      'Vu Van UU', 'Do Van VV', 'Bui Van WW', 'Dang Van XX', 'Ngo Van YY',
+      'Nguyen Thi ZZ', 'Tran Van AA', 'Le Van BB', 'Pham Van CC', 'Hoang Van DD',
+      'Vu Van EE', 'Do Van FF', 'Bui Van GG', 'Dang Van HH', 'Ngo Van II',
+      'Nguyen Thi JJ', 'Tran Van KK', 'Le Van LL', 'Pham Van MM', 'Hoang Van NN',
+      'Vu Van OO', 'Do Van PP', 'Bui Van QQ', 'Dang Van RR', 'Ngo Van SS',
+      'Nguyen Thi TT', 'Tran Van UU', 'Le Van VV', 'Pham Van WW', 'Hoang Van XX',
+      'Vu Van YY', 'Do Van ZZ', 'Bui Van AAA', 'Dang Van BBB', 'Ngo Van CCC',
+      'Nguyen Thi DDD', 'Tran Van EEE', 'Le Van FFF', 'Pham Van GGG', 'Hoang Van HHH'
     ];
 
     for (let i = 0; i < count; i++) {
       const orderId = `ORD-${Date.now()}-${i + 1}`;
       const customerIndex = i % customerNames.length;
-      const order_type = orderTypes[i % orderTypes.length];
+      const order_type = orderTypes[Math.floor(Math.random() * orderTypes.length)];
       const randomItemId = Math.floor(Math.random() * 100) + 1; // 1..100
       
       const order: Order = {
@@ -204,7 +324,7 @@ export class OrderService {
       const orderQuery = `
         INSERT INTO orders (order_id, customer_id, customer_name, customer_email, customer_phone, 
                            total_amount, currency, order_type, status, payment_method, shipping_address, notes, item_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8::order_type, $9, $10, $11, $12, $13)
         RETURNING *
       `;
       
@@ -238,19 +358,59 @@ export class OrderService {
     }
   }
 
-  async getOrders(limit: number = 100, offset: number = 0): Promise<Order[]> {
+  async getOrders(limit: number = 100, offset: number = 0): Promise<any[]> {
     const query = `
-      SELECT * FROM orders 
-      ORDER BY created_at DESC 
+      SELECT 
+        o.order_id,
+        o.customer_id,
+        o.customer_name,
+        o.customer_email,
+        o.customer_phone,
+        o.total_amount,
+        o.currency,
+        o.order_type,
+        o.status,
+        o.created_at,
+        o.updated_at,
+        o.payment_method,
+        o.shipping_address,
+        o.tracking_number,
+        o.notes,
+        i.name as item_name,
+        i.detail as item_detail
+      FROM orders o
+      LEFT JOIN items i ON o.item_id = i.item_id
+      ORDER BY o.created_at DESC 
       LIMIT $1 OFFSET $2
     `;
-    
     const result = await pool.query(query, [limit, offset]);
     return result.rows;
   }
 
-  async getOrderById(orderId: string): Promise<Order | null> {
-    const query = 'SELECT * FROM orders WHERE order_id = $1';
+  async getOrderById(orderId: string): Promise<any | null> {
+    const query = `
+      SELECT 
+        o.order_id,
+        o.customer_id,
+        o.customer_name,
+        o.customer_email,
+        o.customer_phone,
+        o.total_amount,
+        o.currency,
+        o.order_type,
+        o.status,
+        o.created_at,
+        o.updated_at,
+        o.payment_method,
+        o.shipping_address,
+        o.tracking_number,
+        o.notes,
+        i.name as item_name,
+        i.detail as item_detail
+      FROM orders o
+      LEFT JOIN items i ON o.item_id = i.item_id
+      WHERE o.order_id = $1
+    `;
     const result = await pool.query(query, [orderId]);
     return result.rows[0] || null;
   }
@@ -300,6 +460,7 @@ export class OrderService {
           customer_phone: order.customer_phone,
           total_amount: order.total_amount,
           currency: order.currency,
+          order_type: order.order_type,
           payment_method: order.payment_method,
           shipping_address: order.shipping_address,
           notes: order.notes,

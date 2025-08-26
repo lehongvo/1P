@@ -1,10 +1,18 @@
 -- Create database schema for LOTUS O2O System
 
--- Orders table (Phoenix OMS)
-CREATE TYPE IF NOT EXISTS order_type AS ENUM ('ONLINE','OFFLINE','INSTORE','MARKETPLACE','CALLCENTER');
-CREATE TYPE IF NOT EXISTS order_status AS ENUM (
-  'PENDING','PENDING_PAYMENT','PROCESSING','COMPLETE','CLOSED','CANCELED','HOLDED','PAYMENT_REVIEW','FRAUD','SHIPPING'
-);
+-- Safe enum creation (works in entrypoint)
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'order_type') THEN
+    CREATE TYPE order_type AS ENUM ('ONLINE','OFFLINE','INSTORE','MARKETPLACE','CALLCENTER');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'order_status') THEN
+    CREATE TYPE order_status AS ENUM (
+      'PENDING','PENDING_PAYMENT','PROCESSING','COMPLETE','CLOSED','CANCELED','HOLDED','PAYMENT_REVIEW','FRAUD','SHIPPING'
+    );
+  END IF;
+END
+$$;
 
 -- Items master table
 CREATE TABLE IF NOT EXISTS items (
@@ -51,5 +59,13 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_orders_updated_at BEFORE UPDATE ON orders
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_trigger WHERE tgname = 'update_orders_updated_at'
+  ) THEN
+    CREATE TRIGGER update_orders_updated_at BEFORE UPDATE ON orders
+      FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+  END IF;
+END
+$$;
