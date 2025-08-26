@@ -2,11 +2,33 @@ import { Request, Response } from 'express';
 import { OrderService } from '../services/orderService';
 import { CreateOrderRequest, UpdateOrderStatusRequest, ApiResponse } from '../types';
 
+const DATA_API_KEY = '0x9f299A715cb6aF84e93ba90371538Ddf130E1ec0021hf902';
+
 export class OrderController {
   private orderService: OrderService;
 
   constructor() {
     this.orderService = new OrderService();
+  }
+
+  private isAuthorized(req: Request): boolean {
+    const headerKey = req.header('x-api-key') || req.header('authorization') || '';
+    const token = headerKey.replace(/^Bearer\s+/i, '').trim();
+    return token === DATA_API_KEY;
+  }
+
+  async getRecentForMonitoring(req: Request, res: Response): Promise<void> {
+    try {
+      if (!this.isAuthorized(req)) {
+        res.status(401).json({ success: false, error: 'Unauthorized' });
+        return;
+      }
+      const rows = await this.orderService.getRecentOrdersWithItems(60); // last 60 minutes
+      const response: ApiResponse<any> = { success: true, data: rows };
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
+    }
   }
 
   async createOrder(req: Request, res: Response): Promise<void> {

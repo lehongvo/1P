@@ -68,6 +68,22 @@ const progression: OrderStatus[] = [
 
 const service = new OrderService();
 
+// Robust seeding on startup: retry until DB is ready (max 30 attempts)
+(async () => {
+  const maxAttempts = 30;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      await service.ensureItemsSeeded();
+      console.log('✅ Items master ensured (100 rows).');
+      break;
+    } catch (err: any) {
+      const delayMs = 2000;
+      console.error(`❌ Seed items attempt ${attempt}/${maxAttempts} failed: ${err?.message || err}. Retrying in ${delayMs/1000}s...`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+})();
+
 cron.schedule('*/30 * * * * *', async () => {
   try {
     const inProgress = await (async () => {

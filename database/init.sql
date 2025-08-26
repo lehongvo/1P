@@ -6,6 +6,15 @@ CREATE TYPE IF NOT EXISTS order_status AS ENUM (
   'PENDING','PENDING_PAYMENT','PROCESSING','COMPLETE','CLOSED','CANCELED','HOLDED','PAYMENT_REVIEW','FRAUD','SHIPPING'
 );
 
+-- Items master table
+CREATE TABLE IF NOT EXISTS items (
+    id SERIAL PRIMARY KEY,
+    item_id INTEGER UNIQUE NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    detail TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
     order_id VARCHAR(50) UNIQUE NOT NULL,
@@ -17,18 +26,21 @@ CREATE TABLE IF NOT EXISTS orders (
     currency VARCHAR(3) DEFAULT 'VND',
     order_type order_type NOT NULL DEFAULT 'ONLINE',
     status order_status NOT NULL DEFAULT 'PENDING',
+    item_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     payment_method VARCHAR(50),
     shipping_address TEXT,
     tracking_number VARCHAR(100),
-    notes TEXT
+    notes TEXT,
+    CONSTRAINT fk_orders_item_id FOREIGN KEY (item_id) REFERENCES items(item_id)
 );
 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
 CREATE INDEX IF NOT EXISTS idx_orders_order_type ON orders(order_type);
+CREATE INDEX IF NOT EXISTS idx_orders_item_id ON orders(item_id);
 
 -- Create trigger to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()

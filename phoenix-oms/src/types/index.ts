@@ -1,5 +1,13 @@
 export type OrderType = 'ONLINE' | 'OFFLINE' | 'INSTORE' | 'MARKETPLACE' | 'CALLCENTER';
 
+export interface Item {
+  id?: number;
+  item_id: number;
+  name: string;
+  detail?: string;
+  created_at?: Date;
+}
+
 export interface Order {
   id?: number;
   order_id: string;
@@ -11,6 +19,7 @@ export interface Order {
   currency?: string;
   order_type: OrderType;
   status: OrderStatus;
+  item_id?: number;
   created_at?: Date;
   updated_at?: Date;
   payment_method?: string;
@@ -41,6 +50,7 @@ export interface CreateOrderRequest {
   order_type?: OrderType;
   payment_method?: string;
   shipping_address?: string;
+  item_id?: number;
   notes?: string;
 }
 
