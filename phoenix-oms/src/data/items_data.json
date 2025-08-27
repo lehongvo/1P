@@ -1,0 +1,4002 @@
+[
+    {
+      "name": "Fitness Tracker #1",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Jump Rope #2",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Coffee Maker #3",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Dumbbell Set #4",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Webcam 1080p #5",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Treadmill #6",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Scarf #7",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Refrigerator #8",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Washing Machine #9",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Jacket #10",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Bicycle #11",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Hiking Backpack #12",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Portable SSD #13",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Sleeping Bag #14",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Webcam 1080p #15",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Hiking Backpack #16",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Webcam 1080p #17",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Electric Kettle #18",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Sneakers #19",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "4K Monitor #20",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Smartwatch #21",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Mechanical Keyboard #22",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Hiking Backpack #23",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "USB-C Charger #24",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Jacket #25",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Backpack #26",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Wristwatch #27",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Hiking Backpack #28",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Yoga Mat #29",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Vacuum Cleaner #30",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Tent #31",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Webcam 1080p #32",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "4K Monitor #33",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "4K Monitor #34",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Fitness Tracker #35",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Coffee Maker #36",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Sleeping Bag #37",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Sunglasses #38",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Vacuum Cleaner #39",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Sneakers #40",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Blender #41",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Tent #42",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Electric Kettle #43",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Jump Rope #44",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Coffee Maker #45",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Sunglasses #46",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Hiking Backpack #47",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Washing Machine #48",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Running Shoes #49",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Air Purifier #50",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Mechanical Keyboard #51",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Webcam 1080p #52",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Coffee Maker #53",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Yoga Mat #54",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Air Purifier #55",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Portable SSD #56",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Vacuum Cleaner #57",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Sleeping Bag #58",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Microwave Oven #59",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Wristwatch #60",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "4K Monitor #61",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Mechanical Keyboard #62",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "USB-C Charger #63",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Coffee Maker #64",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Fitness Tracker #65",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Mechanical Keyboard #66",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Kayak #67",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Tent #68",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Washing Machine #69",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "T-shirt #70",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Yoga Mat #71",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Bicycle #72",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Kayak #73",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "USB-C Charger #74",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Vacuum Cleaner #75",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Leather Wallet #76",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Washing Machine #77",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Mechanical Keyboard #78",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Dishwasher #79",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "T-shirt #80",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Dumbbell Set #81",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Treadmill #82",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Tent #83",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Fitness Tracker #84",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Sleeping Bag #85",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Webcam 1080p #86",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Portable SSD #87",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Coffee Maker #88",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Fitness Tracker #89",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Jeans #90",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Leather Wallet #91",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Dumbbell Set #92",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Sleeping Bag #93",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Refrigerator #94",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Kayak #95",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Leather Wallet #96",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Jacket #97",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Vacuum Cleaner #98",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Wireless Mouse #99",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Vacuum Cleaner #100",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Backpack #101",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Dishwasher #102",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Electric Kettle #103",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Leather Wallet #104",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Microwave Oven #105",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Tent #106",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Portable SSD #107",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Refrigerator #108",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Sunglasses #109",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "USB-C Charger #110",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Jacket #111",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Jump Rope #112",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Scarf #113",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Leather Wallet #114",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Air Fryer #115",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Air Fryer #116",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Coffee Maker #117",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Dumbbell Set #118",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Sleeping Bag #119",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Sneakers #120",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "USB-C Charger #121",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Sunglasses #122",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Sneakers #123",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Sleeping Bag #124",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Treadmill #125",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Treadmill #126",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Coffee Maker #127",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Cap #128",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Noise Cancelling Headphones #129",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "4K Monitor #130",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Electric Kettle #131",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Fitness Tracker #132",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Noise Cancelling Headphones #133",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Noise Cancelling Headphones #134",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Microwave Oven #135",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Washing Machine #136",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "T-shirt #137",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Tent #138",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Wireless Mouse #139",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Wristwatch #140",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Refrigerator #141",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Air Fryer #142",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Cap #143",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Coffee Maker #144",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Sleeping Bag #145",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Dishwasher #146",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Leather Wallet #147",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Noise Cancelling Headphones #148",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Jeans #149",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Sleeping Bag #150",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Tent #151",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Smartwatch #152",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Dumbbell Set #153",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Hiking Backpack #154",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Microwave Oven #155",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Electric Kettle #156",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Sneakers #157",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Dumbbell Set #158",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Tent #159",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Webcam 1080p #160",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Cap #161",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Wristwatch #162",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Air Fryer #163",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "T-shirt #164",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Tent #165",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Mechanical Keyboard #166",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Bicycle #167",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Coffee Maker #168",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Running Shoes #169",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "USB-C Charger #170",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Leather Wallet #171",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Mechanical Keyboard #172",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Tent #173",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Running Shoes #174",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Sunglasses #175",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Coffee Maker #176",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Air Purifier #177",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Coffee Maker #178",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Coffee Maker #179",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Treadmill #180",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "T-shirt #181",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Backpack #182",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Vacuum Cleaner #183",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Yoga Mat #184",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Refrigerator #185",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Washing Machine #186",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Wireless Mouse #187",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Air Fryer #188",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Jeans #189",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Tent #190",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "4K Monitor #191",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Portable SSD #192",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Air Fryer #193",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Cap #194",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Backpack #195",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Tent #196",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Hiking Backpack #197",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Vacuum Cleaner #198",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Refrigerator #199",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Portable SSD #200",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Dumbbell Set #201",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Microwave Oven #202",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Webcam 1080p #203",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Refrigerator #204",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Coffee Maker #205",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Mechanical Keyboard #206",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "USB-C Charger #207",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Air Purifier #208",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Blender #209",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Air Fryer #210",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Fitness Tracker #211",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Blender #212",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Bicycle #213",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Wristwatch #214",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Running Shoes #215",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Scarf #216",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Webcam 1080p #217",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "USB-C Charger #218",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Jeans #219",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Scarf #220",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Hiking Backpack #221",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Dishwasher #222",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Dumbbell Set #223",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Tent #224",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Microwave Oven #225",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Electric Kettle #226",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Yoga Mat #227",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Bluetooth Speaker #228",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Refrigerator #229",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Yoga Mat #230",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Jeans #231",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Hiking Backpack #232",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Treadmill #233",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Mechanical Keyboard #234",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Fitness Tracker #235",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Treadmill #236",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Tent #237",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "T-shirt #238",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Webcam 1080p #239",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Noise Cancelling Headphones #240",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Bluetooth Speaker #241",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Blender #242",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Wireless Mouse #243",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Vacuum Cleaner #244",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Running Shoes #245",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Electric Kettle #246",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Electric Kettle #247",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Air Purifier #248",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Sleeping Bag #249",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Air Fryer #250",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Jump Rope #251",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Blender #252",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Tent #253",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "T-shirt #254",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Hiking Backpack #255",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Kayak #256",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Blender #257",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "T-shirt #258",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Scarf #259",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Tent #260",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Microwave Oven #261",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "T-shirt #262",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Bluetooth Speaker #263",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "T-shirt #264",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Tent #265",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Wristwatch #266",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Sneakers #267",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Scarf #268",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Washing Machine #269",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Portable SSD #270",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Backpack #271",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Sunglasses #272",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Backpack #273",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Coffee Maker #274",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Webcam 1080p #275",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Microwave Oven #276",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Portable SSD #277",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Yoga Mat #278",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Bluetooth Speaker #279",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Portable SSD #280",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Air Purifier #281",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Sneakers #282",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Blender #283",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Air Fryer #284",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Vacuum Cleaner #285",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Tent #286",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Sneakers #287",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Blender #288",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Leather Wallet #289",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Portable SSD #290",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Coffee Maker #291",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Running Shoes #292",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Wristwatch #293",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Hiking Backpack #294",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Webcam 1080p #295",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Webcam 1080p #296",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Vacuum Cleaner #297",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Wireless Mouse #298",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Washing Machine #299",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Running Shoes #300",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Leather Wallet #301",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Sneakers #302",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Sleeping Bag #303",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Dumbbell Set #304",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Jacket #305",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Webcam 1080p #306",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Portable SSD #307",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Yoga Mat #308",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Hiking Backpack #309",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Tent #310",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Jeans #311",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Leather Wallet #312",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Noise Cancelling Headphones #313",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Sneakers #314",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Sunglasses #315",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Washing Machine #316",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Electric Kettle #317",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Bicycle #318",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Sneakers #319",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Cap #320",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Jump Rope #321",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Jeans #322",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Leather Wallet #323",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Sneakers #324",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Blender #325",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Dishwasher #326",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Cap #327",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Blender #328",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "USB-C Charger #329",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Sunglasses #330",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Smartwatch #331",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Dishwasher #332",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Cap #333",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Coffee Maker #334",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Mechanical Keyboard #335",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Cap #336",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Wristwatch #337",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Jacket #338",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Vacuum Cleaner #339",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Jacket #340",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Wireless Mouse #341",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Smartwatch #342",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Hiking Backpack #343",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Leather Wallet #344",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Smartwatch #345",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Tent #346",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Blender #347",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Mechanical Keyboard #348",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Washing Machine #349",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Jeans #350",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Sleeping Bag #351",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Microwave Oven #352",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Running Shoes #353",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Smartwatch #354",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Smartwatch #355",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Air Purifier #356",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "USB-C Charger #357",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "4K Monitor #358",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Tent #359",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "USB-C Charger #360",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Running Shoes #361",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Webcam 1080p #362",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Hiking Backpack #363",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Sleeping Bag #364",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "T-shirt #365",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Webcam 1080p #366",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Vacuum Cleaner #367",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Coffee Maker #368",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Vacuum Cleaner #369",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Leather Wallet #370",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Leather Wallet #371",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Dumbbell Set #372",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Portable SSD #373",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Treadmill #374",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Wireless Mouse #375",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Smartwatch #376",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Dishwasher #377",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Dumbbell Set #378",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Webcam 1080p #379",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Sunglasses #380",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Backpack #381",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Fitness Tracker #382",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Treadmill #383",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Microwave Oven #384",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Microwave Oven #385",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Backpack #386",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Noise Cancelling Headphones #387",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Air Purifier #388",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Backpack #389",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Portable SSD #390",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Air Fryer #391",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Treadmill #392",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Wristwatch #393",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Noise Cancelling Headphones #394",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Wireless Mouse #395",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Microwave Oven #396",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Jump Rope #397",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Vacuum Cleaner #398",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Leather Wallet #399",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Fitness Tracker #400",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Smartwatch #401",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Jump Rope #402",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Air Fryer #403",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Coffee Maker #404",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Blender #405",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Jump Rope #406",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Sneakers #407",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Running Shoes #408",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Air Fryer #409",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Noise Cancelling Headphones #410",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Bluetooth Speaker #411",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Sunglasses #412",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Bicycle #413",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Coffee Maker #414",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Bluetooth Speaker #415",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Bicycle #416",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Tent #417",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Sleeping Bag #418",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Dumbbell Set #419",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Jacket #420",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Vacuum Cleaner #421",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Microwave Oven #422",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Mechanical Keyboard #423",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Dumbbell Set #424",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Hiking Backpack #425",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "4K Monitor #426",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Bluetooth Speaker #427",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Webcam 1080p #428",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Dishwasher #429",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Jump Rope #430",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Air Purifier #431",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Webcam 1080p #432",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Hiking Backpack #433",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Wireless Mouse #434",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Coffee Maker #435",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "USB-C Charger #436",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Leather Wallet #437",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Sneakers #438",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Hiking Backpack #439",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Treadmill #440",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "4K Monitor #441",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Air Fryer #442",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Hiking Backpack #443",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Air Purifier #444",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Bluetooth Speaker #445",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Webcam 1080p #446",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Sleeping Bag #447",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Treadmill #448",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Mechanical Keyboard #449",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Smartwatch #450",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Portable SSD #451",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Wristwatch #452",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Smartwatch #453",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Blender #454",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Fitness Tracker #455",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Wireless Mouse #456",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Portable SSD #457",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Coffee Maker #458",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Jump Rope #459",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Sleeping Bag #460",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Wristwatch #461",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Jeans #462",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Mechanical Keyboard #463",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Microwave Oven #464",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Vacuum Cleaner #465",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "USB-C Charger #466",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Hiking Backpack #467",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Portable SSD #468",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Air Purifier #469",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Microwave Oven #470",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "T-shirt #471",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Wristwatch #472",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Leather Wallet #473",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Bluetooth Speaker #474",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Treadmill #475",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "4K Monitor #476",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Blender #477",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Webcam 1080p #478",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Webcam 1080p #479",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Fitness Tracker #480",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "4K Monitor #481",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Treadmill #482",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Electric Kettle #483",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Vacuum Cleaner #484",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Treadmill #485",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Fitness Tracker #486",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Air Fryer #487",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Backpack #488",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Hiking Backpack #489",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Bluetooth Speaker #490",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Leather Wallet #491",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "4K Monitor #492",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "T-shirt #493",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Backpack #494",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Bluetooth Speaker #495",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Air Purifier #496",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "4K Monitor #497",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "USB-C Charger #498",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Webcam 1080p #499",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Scarf #500",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Bluetooth Speaker #501",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Treadmill #502",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "USB-C Charger #503",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Air Fryer #504",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Microwave Oven #505",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Tent #506",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Hiking Backpack #507",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Webcam 1080p #508",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Refrigerator #509",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Scarf #510",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Sneakers #511",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Jeans #512",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Sleeping Bag #513",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "4K Monitor #514",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Sleeping Bag #515",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Wristwatch #516",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Cap #517",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Bluetooth Speaker #518",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Air Fryer #519",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Cap #520",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Dishwasher #521",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "T-shirt #522",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Coffee Maker #523",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Sunglasses #524",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Refrigerator #525",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Washing Machine #526",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Air Fryer #527",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Wristwatch #528",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Tent #529",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Air Purifier #530",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Treadmill #531",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Electric Kettle #532",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Scarf #533",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Smartwatch #534",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Kayak #535",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Sleeping Bag #536",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Kayak #537",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Dishwasher #538",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Yoga Mat #539",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Washing Machine #540",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Backpack #541",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Refrigerator #542",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "T-shirt #543",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "USB-C Charger #544",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Electric Kettle #545",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Noise Cancelling Headphones #546",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Kayak #547",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Sneakers #548",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Hiking Backpack #549",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Wireless Mouse #550",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Vacuum Cleaner #551",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Hiking Backpack #552",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Tent #553",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Bluetooth Speaker #554",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Air Purifier #555",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Wristwatch #556",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Coffee Maker #557",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Dishwasher #558",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Treadmill #559",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Dishwasher #560",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Scarf #561",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Treadmill #562",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Electric Kettle #563",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Jacket #564",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Hiking Backpack #565",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Electric Kettle #566",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Sleeping Bag #567",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Fitness Tracker #568",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Kayak #569",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Mechanical Keyboard #570",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Smartwatch #571",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Noise Cancelling Headphones #572",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Hiking Backpack #573",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Smartwatch #574",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Bicycle #575",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Refrigerator #576",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Washing Machine #577",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Air Purifier #578",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Dumbbell Set #579",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "4K Monitor #580",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Vacuum Cleaner #581",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Jacket #582",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Coffee Maker #583",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Portable SSD #584",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Portable SSD #585",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Mechanical Keyboard #586",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Air Purifier #587",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Jeans #588",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Fitness Tracker #589",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Webcam 1080p #590",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Scarf #591",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Sneakers #592",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Webcam 1080p #593",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Running Shoes #594",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "4K Monitor #595",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Yoga Mat #596",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "T-shirt #597",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Blender #598",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Blender #599",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Backpack #600",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Portable SSD #601",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Wristwatch #602",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Smartwatch #603",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Refrigerator #604",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Portable SSD #605",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Coffee Maker #606",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Jeans #607",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Cap #608",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "USB-C Charger #609",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Washing Machine #610",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Jump Rope #611",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Wristwatch #612",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Webcam 1080p #613",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Webcam 1080p #614",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Washing Machine #615",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Bicycle #616",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "T-shirt #617",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Yoga Mat #618",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Electric Kettle #619",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Air Fryer #620",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Wireless Mouse #621",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Washing Machine #622",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "USB-C Charger #623",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Scarf #624",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Fitness Tracker #625",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Backpack #626",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Bluetooth Speaker #627",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Hiking Backpack #628",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Tent #629",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Refrigerator #630",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Sneakers #631",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Smartwatch #632",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Hiking Backpack #633",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Dishwasher #634",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Blender #635",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Jacket #636",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Electric Kettle #637",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Vacuum Cleaner #638",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Leather Wallet #639",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Sneakers #640",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Treadmill #641",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Coffee Maker #642",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "4K Monitor #643",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Wireless Mouse #644",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Dumbbell Set #645",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Jump Rope #646",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "Tent #647",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Hiking Backpack #648",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Hiking Backpack #649",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Portable SSD #650",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Kayak #651",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Webcam 1080p #652",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Washing Machine #653",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Backpack #654",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Kayak #655",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Refrigerator #656",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Dishwasher #657",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Cap #658",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Scarf #659",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Treadmill #660",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Air Fryer #661",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Mechanical Keyboard #662",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Treadmill #663",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Jacket #664",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Dishwasher #665",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Running Shoes #666",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Air Fryer #667",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Air Fryer #668",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Wireless Mouse #669",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Portable SSD #670",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Portable SSD #671",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Bluetooth Speaker #672",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Fitness Tracker #673",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Wristwatch #674",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Air Fryer #675",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Electric Kettle #676",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Hiking Backpack #677",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Wristwatch #678",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Dumbbell Set #679",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "4K Monitor #680",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Backpack #681",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Vacuum Cleaner #682",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Microwave Oven #683",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Leather Wallet #684",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Scarf #685",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Refrigerator #686",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Hiking Backpack #687",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Scarf #688",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Dumbbell Set #689",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Sneakers #690",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Sleeping Bag #691",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Webcam 1080p #692",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Mechanical Keyboard #693",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Blender #694",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Backpack #695",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Scarf #696",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Bluetooth Speaker #697",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Air Fryer #698",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Jacket #699",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Air Purifier #700",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Webcam 1080p #701",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Scarf #702",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Wristwatch #703",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Vacuum Cleaner #704",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Electric Kettle #705",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Air Fryer #706",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Running Shoes #707",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Running Shoes #708",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Vacuum Cleaner #709",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Wireless Mouse #710",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Electric Kettle #711",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Dishwasher #712",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Noise Cancelling Headphones #713",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Washing Machine #714",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Noise Cancelling Headphones #715",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Leather Wallet #716",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Wristwatch #717",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Dumbbell Set #718",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Vacuum Cleaner #719",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Tent #720",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Wristwatch #721",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Backpack #722",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Sunglasses #723",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Wireless Mouse #724",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Wireless Mouse #725",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Dishwasher #726",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Webcam 1080p #727",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Yoga Mat #728",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "4K Monitor #729",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Mechanical Keyboard #730",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Running Shoes #731",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Running Shoes #732",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Leather Wallet #733",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Hiking Backpack #734",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Scarf #735",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Backpack #736",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Electric Kettle #737",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Vacuum Cleaner #738",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Portable SSD #739",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Vacuum Cleaner #740",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Treadmill #741",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Bluetooth Speaker #742",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Bluetooth Speaker #743",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "4K Monitor #744",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Kayak #745",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Scarf #746",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Vacuum Cleaner #747",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Smartwatch #748",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Bicycle #749",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Yoga Mat #750",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Vacuum Cleaner #751",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Treadmill #752",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Jeans #753",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Treadmill #754",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Noise Cancelling Headphones #755",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Sleeping Bag #756",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Scarf #757",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Refrigerator #758",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Webcam 1080p #759",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Webcam 1080p #760",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "4K Monitor #761",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Microwave Oven #762",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Vacuum Cleaner #763",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Hiking Backpack #764",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Scarf #765",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Bluetooth Speaker #766",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Kayak #767",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Leather Wallet #768",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Smartwatch #769",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Fitness Tracker #770",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Sunglasses #771",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "4K Monitor #772",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Running Shoes #773",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Yoga Mat #774",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Dishwasher #775",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Dumbbell Set #776",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Electric Kettle #777",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "T-shirt #778",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Backpack #779",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Bluetooth Speaker #780",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Mechanical Keyboard #781",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Bluetooth Speaker #782",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Fitness Tracker #783",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Vacuum Cleaner #784",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Webcam 1080p #785",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "T-shirt #786",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Coffee Maker #787",
+      "detail": "Espresso machine with milk frother"
+    },
+    {
+      "name": "Wristwatch #788",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Refrigerator #789",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Tent #790",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Yoga Mat #791",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Dumbbell Set #792",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Bicycle #793",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Wristwatch #794",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Smartwatch #795",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Hiking Backpack #796",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "T-shirt #797",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Cap #798",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Electric Kettle #799",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Scarf #800",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Tent #801",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Bluetooth Speaker #802",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Wristwatch #803",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Dumbbell Set #804",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Scarf #805",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Air Fryer #806",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Wireless Mouse #807",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Smartwatch #808",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Sunglasses #809",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Refrigerator #810",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Electric Kettle #811",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Webcam 1080p #812",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Electric Kettle #813",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Yoga Mat #814",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Jeans #815",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Running Shoes #816",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Dishwasher #817",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Blender #818",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Dishwasher #819",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Jacket #820",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Jeans #821",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Washing Machine #822",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Jeans #823",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Scarf #824",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "Webcam 1080p #825",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Backpack #826",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Kayak #827",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Air Fryer #828",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Bluetooth Speaker #829",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Bluetooth Speaker #830",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Refrigerator #831",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Webcam 1080p #832",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Bicycle #833",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Treadmill #834",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Wireless Mouse #835",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Fitness Tracker #836",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Fitness Tracker #837",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Electric Kettle #838",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Noise Cancelling Headphones #839",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "USB-C Charger #840",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Blender #841",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Yoga Mat #842",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Dishwasher #843",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Leather Wallet #844",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Dumbbell Set #845",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Yoga Mat #846",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Wristwatch #847",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Portable SSD #848",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Fitness Tracker #849",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Noise Cancelling Headphones #850",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Air Purifier #851",
+      "detail": "HEPA filter, covers 40m² room"
+    },
+    {
+      "name": "Kayak #852",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "USB-C Charger #853",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Sleeping Bag #854",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Blender #855",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Vacuum Cleaner #856",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Backpack #857",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Yoga Mat #858",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Electric Kettle #859",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Microwave Oven #860",
+      "detail": "20L capacity, defrost & grill modes"
+    },
+    {
+      "name": "Sleeping Bag #861",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Treadmill #862",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Blender #863",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Washing Machine #864",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Leather Wallet #865",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Mechanical Keyboard #866",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Running Shoes #867",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Backpack #868",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Portable SSD #869",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Smartwatch #870",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Air Fryer #871",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Leather Wallet #872",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "Wireless Mouse #873",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "4K Monitor #874",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Mechanical Keyboard #875",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Sleeping Bag #876",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Electric Kettle #877",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Air Fryer #878",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Electric Kettle #879",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Mechanical Keyboard #880",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Sunglasses #881",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Dumbbell Set #882",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Scarf #883",
+      "detail": "Wool blend, winter warm"
+    },
+    {
+      "name": "T-shirt #884",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Backpack #885",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Leather Wallet #886",
+      "detail": "Bifold with RFID protection"
+    },
+    {
+      "name": "USB-C Charger #887",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Noise Cancelling Headphones #888",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Treadmill #889",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Portable SSD #890",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Smartwatch #891",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Hiking Backpack #892",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Washing Machine #893",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Wristwatch #894",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Bicycle #895",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "USB-C Charger #896",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Sunglasses #897",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Smartwatch #898",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Sunglasses #899",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Blender #900",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Air Fryer #901",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Portable SSD #902",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "USB-C Charger #903",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Bicycle #904",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Cap #905",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Dishwasher #906",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Wristwatch #907",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Blender #908",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "Electric Kettle #909",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Sleeping Bag #910",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Smartwatch #911",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Webcam 1080p #912",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Vacuum Cleaner #913",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Smartwatch #914",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Jeans #915",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Wireless Mouse #916",
+      "detail": "Ergonomic 2.4G wireless optical mouse"
+    },
+    {
+      "name": "Air Fryer #917",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Treadmill #918",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Mechanical Keyboard #919",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Noise Cancelling Headphones #920",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Kayak #921",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Cap #922",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Bluetooth Speaker #923",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Electric Kettle #924",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Dumbbell Set #925",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Electric Kettle #926",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Treadmill #927",
+      "detail": "Foldable, 2.5HP motor, LCD display"
+    },
+    {
+      "name": "Running Shoes #928",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Noise Cancelling Headphones #929",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "Hiking Backpack #930",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Mechanical Keyboard #931",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Jeans #932",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Blender #933",
+      "detail": "High-speed 1000W with multiple jars"
+    },
+    {
+      "name": "USB-C Charger #934",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Smartwatch #935",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Hiking Backpack #936",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Webcam 1080p #937",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Kayak #938",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Jump Rope #939",
+      "detail": "Adjustable length, ball bearing system"
+    },
+    {
+      "name": "T-shirt #940",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Jacket #941",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Sneakers #942",
+      "detail": "Casual everyday comfort shoes"
+    },
+    {
+      "name": "Dumbbell Set #943",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Running Shoes #944",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Bluetooth Speaker #945",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Kayak #946",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Running Shoes #947",
+      "detail": "Lightweight, breathable mesh"
+    },
+    {
+      "name": "Dishwasher #948",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Air Fryer #949",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Jacket #950",
+      "detail": "Windproof, waterproof outdoor coat"
+    },
+    {
+      "name": "Air Fryer #951",
+      "detail": "3.5L digital display, low-oil cooking"
+    },
+    {
+      "name": "Bluetooth Speaker #952",
+      "detail": "Waterproof portable speaker, deep bass"
+    },
+    {
+      "name": "Dumbbell Set #953",
+      "detail": "Adjustable weights up to 20kg"
+    },
+    {
+      "name": "Cap #954",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Jeans #955",
+      "detail": "Slim fit, stretch denim"
+    },
+    {
+      "name": "Fitness Tracker #956",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "Wristwatch #957",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "Yoga Mat #958",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Yoga Mat #959",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Electric Kettle #960",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Refrigerator #961",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Mechanical Keyboard #962",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Noise Cancelling Headphones #963",
+      "detail": "Over-ear ANC with 30h battery"
+    },
+    {
+      "name": "4K Monitor #964",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Smartwatch #965",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Cap #966",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "Smartwatch #967",
+      "detail": "Heart-rate, GPS, sleep tracking"
+    },
+    {
+      "name": "Kayak #968",
+      "detail": "Inflatable, 2-person with paddles"
+    },
+    {
+      "name": "Webcam 1080p #969",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Wristwatch #970",
+      "detail": "Quartz analog with stainless strap"
+    },
+    {
+      "name": "4K Monitor #971",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Portable SSD #972",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Yoga Mat #973",
+      "detail": "6mm non-slip, eco-friendly material"
+    },
+    {
+      "name": "Sunglasses #974",
+      "detail": "UV400 polarized lenses"
+    },
+    {
+      "name": "Sleeping Bag #975",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "4K Monitor #976",
+      "detail": "27-inch IPS, HDR10, 60Hz"
+    },
+    {
+      "name": "Sleeping Bag #977",
+      "detail": "Comfortable for -5°C to 10°C"
+    },
+    {
+      "name": "Refrigerator #978",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Electric Kettle #979",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "T-shirt #980",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Fitness Tracker #981",
+      "detail": "24/7 activity and SPO2 monitoring"
+    },
+    {
+      "name": "T-shirt #982",
+      "detail": "100% cotton, regular fit"
+    },
+    {
+      "name": "Webcam 1080p #983",
+      "detail": "Full HD with dual mics and privacy cover"
+    },
+    {
+      "name": "Bicycle #984",
+      "detail": "21-speed mountain bike, alloy frame"
+    },
+    {
+      "name": "Tent #985",
+      "detail": "4-person waterproof camping tent"
+    },
+    {
+      "name": "Cap #986",
+      "detail": "Adjustable snapback, breathable fabric"
+    },
+    {
+      "name": "USB-C Charger #987",
+      "detail": "65W fast charger with PD support"
+    },
+    {
+      "name": "Portable SSD #988",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Vacuum Cleaner #989",
+      "detail": "Bagless cyclonic suction, 2000W"
+    },
+    {
+      "name": "Washing Machine #990",
+      "detail": "Front load, 7kg, inverter motor"
+    },
+    {
+      "name": "Refrigerator #991",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Backpack #992",
+      "detail": "Water-resistant, 30L capacity"
+    },
+    {
+      "name": "Hiking Backpack #993",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Dishwasher #994",
+      "detail": "12 place settings, eco mode"
+    },
+    {
+      "name": "Mechanical Keyboard #995",
+      "detail": "RGB backlit, blue switches, full size"
+    },
+    {
+      "name": "Refrigerator #996",
+      "detail": "Double door, frost-free, 300L"
+    },
+    {
+      "name": "Hiking Backpack #997",
+      "detail": "50L capacity, water-resistant"
+    },
+    {
+      "name": "Electric Kettle #998",
+      "detail": "1.7L stainless steel, auto shut-off"
+    },
+    {
+      "name": "Portable SSD #999",
+      "detail": "1TB NVMe USB 3.2 Gen2 drive"
+    },
+    {
+      "name": "Mechanical Keyboard #1000",
+      "detail": "RGB backlit, blue switches, full size"
+    }
+  ]

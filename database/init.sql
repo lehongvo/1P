@@ -37,12 +37,20 @@ CREATE TABLE IF NOT EXISTS orders (
     item_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    end_time_processing TIMESTAMP NULL,
+    end_time_payment_review TIMESTAMP NULL,
+    end_time_shipping TIMESTAMP NULL,
     payment_method VARCHAR(50),
     shipping_address TEXT,
     tracking_number VARCHAR(100),
     notes TEXT,
     CONSTRAINT fk_orders_item_id FOREIGN KEY (item_id) REFERENCES items(item_id)
 );
+
+-- Backfill-safe migration for existing databases
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS end_time_processing TIMESTAMP NULL;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS end_time_payment_review TIMESTAMP NULL;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS end_time_shipping TIMESTAMP NULL;
 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);

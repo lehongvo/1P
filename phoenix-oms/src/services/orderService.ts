@@ -1,6 +1,8 @@
+import fs from 'fs';
+import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import pool from '../database/connection';
-import { Order, OrderStatus, CreateOrderRequest, OrderType } from '../types';
+import { CreateOrderRequest, Order, OrderStatus, OrderType } from '../types';
 
 export class OrderService {
   async ensureSchema(): Promise<void> {
@@ -69,111 +71,18 @@ export class OrderService {
     if (count >= 100) return;
 
     await pool.query('TRUNCATE TABLE items RESTART IDENTITY CASCADE');
-
-    const itemNames: { name: string; detail: string }[] = [
-      { name: 'Wireless Mouse', detail: 'Ergonomic 2.4G wireless optical mouse' },
-      { name: 'Mechanical Keyboard', detail: 'RGB backlit, blue switches, full size' },
-      { name: 'USB-C Charger', detail: '65W fast charger with PD support' },
-      { name: 'Noise Cancelling Headphones', detail: 'Over-ear ANC with 30h battery' },
-      { name: '4K Monitor', detail: '27-inch IPS, HDR10, 60Hz' },
-      { name: 'Portable SSD', detail: '1TB NVMe USB 3.2 Gen2 drive' },
-      { name: 'Webcam 1080p', detail: 'Full HD with dual mics and privacy cover' },
-      { name: 'Bluetooth Speaker', detail: 'Waterproof portable speaker, deep bass' },
-      { name: 'Smartwatch', detail: 'Heart-rate, GPS, sleep tracking' },
-      { name: 'Fitness Tracker', detail: '24/7 activity and SPO2 monitoring' },
-      { name: 'Gaming Controller', detail: 'Wireless joystick for PC/Console' },
-      { name: 'HDMI Cable', detail: '2.1 certified, 8K/60, 48Gbps' },
-      { name: 'USB-C Hub', detail: '7-in-1 with HDMI, SD, USB 3.0' },
-      { name: 'Laptop Stand', detail: 'Adjustable aluminum cooling stand' },
-      { name: 'Wireless Earbuds', detail: 'True wireless with ANC and transparency' },
-      { name: 'Action Camera', detail: '4K/60 stabilization, waterproof' },
-      { name: 'Drone', detail: '4K camera, 3-axis gimbal, GPS return' },
-      { name: 'Tripod', detail: 'Lightweight aluminum tripod with head' },
-      { name: 'Ring Light', detail: '12-inch LED with phone holder' },
-      { name: 'Power Bank', detail: '20,000mAh PD 30W fast charge' },
-      { name: 'Wireless Router', detail: 'Wi‑Fi 6 dual-band gigabit' },
-      { name: 'Network Switch', detail: '8‑port gigabit unmanaged switch' },
-      { name: 'NAS Enclosure', detail: '2‑bay RAID, 2.5GbE support' },
-      { name: 'Smart Plug', detail: 'Wi‑Fi plug with energy monitoring' },
-      { name: 'Smart Bulb', detail: 'RGB smart bulb, voice control' },
-      { name: 'Doorbell Camera', detail: '1080p video doorbell with chime' },
-      { name: 'IP Security Camera', detail: 'Pan/tilt, night vision, alerts' },
-      { name: 'Electric Kettle', detail: '1.7L stainless steel, auto shutoff' },
-      { name: 'Air Fryer', detail: '4L rapid air technology cooker' },
-      { name: 'Coffee Maker', detail: 'Drip coffee machine with timer' },
-      { name: 'Blender', detail: 'High-speed blender for smoothies' },
-      { name: 'Rice Cooker', detail: 'Multi-function digital rice cooker' },
-      { name: 'Vacuum Cleaner', detail: 'Cordless stick with HEPA filter' },
-      { name: 'Robot Vacuum', detail: 'LiDAR mapping and mop combo' },
-      { name: 'Electric Toothbrush', detail: 'Sonic with pressure sensor' },
-      { name: 'Hair Dryer', detail: 'Ionic fast-dry with diffuser' },
-      { name: 'Steam Iron', detail: 'Ceramic soleplate, anti-drip' },
-      { name: 'Clothes Steamer', detail: 'Handheld garment steamer' },
-      { name: 'Air Purifier', detail: 'HEPA 13, PM2.5 sensor, silent' },
-      { name: 'Humidifier', detail: 'Ultrasonic cool mist 4L' },
-      { name: 'Dehumidifier', detail: '20L/day with auto defrost' },
-      { name: 'Water Filter Pitcher', detail: '5‑stage filter for clean water' },
-      { name: 'Yoga Mat', detail: 'Non-slip TPE 6mm mat' },
-      { name: 'Adjustable Dumbbells', detail: 'Pair 2.5–25kg quick select' },
-      { name: 'Resistance Bands', detail: 'Set of 5 with door anchor' },
-      { name: 'Foam Roller', detail: 'Deep-tissue muscle massage' },
-      { name: 'Jump Rope', detail: 'Weighted speed rope, bearing' },
-      { name: 'Camping Tent', detail: '2‑person waterproof quick setup' },
-      { name: 'Sleeping Bag', detail: '3‑season lightweight mummy bag' },
-      { name: 'Hiking Backpack', detail: '30L ventilated daypack' },
-      { name: 'Portable Stove', detail: 'Butane gas camp cooker' },
-      { name: 'LED Lantern', detail: 'Rechargeable 1000lm lantern' },
-      { name: 'E‑Reader', detail: '6‑inch front-lit e‑ink display' },
-      { name: 'Tablet', detail: '10‑inch tablet, 128GB storage' },
-      { name: 'Smartphone Gimbal', detail: '3‑axis stabilization, tracking' },
-      { name: 'Photo Printer', detail: 'Wireless A4 inkjet printer' },
-      { name: 'Laser Printer', detail: 'Monochrome duplex laser printer' },
-      { name: 'Shredder', detail: 'Cross-cut 12‑sheet shredder' },
-      { name: 'Office Chair', detail: 'Ergonomic mesh lumbar support' },
-      { name: 'Standing Desk', detail: 'Electric height adjustable desk' },
-      { name: 'Desk Lamp', detail: 'Eye-care LED with USB charging' },
-      { name: 'Whiteboard', detail: 'Magnetic dry-erase 90×60cm' },
-      { name: 'Tool Kit', detail: '108‑piece household tool set' },
-      { name: 'Cordless Drill', detail: 'Brushless 20V with 2 batteries' },
-      { name: 'Screwdriver Set', detail: 'Precision 60‑in‑1 repair kit' },
-      { name: 'Multimeter', detail: 'Auto‑range digital multimeter' },
-      { name: 'Soldering Station', detail: 'Temperature‑controlled 60W' },
-      { name: 'Air Compressor', detail: 'Portable tire inflator 12V' },
-      { name: 'Car Dash Cam', detail: '1440p with GPS and Wi‑Fi' },
-      { name: 'Car Jump Starter', detail: '1000A peak with power bank' },
-      { name: 'Bike Helmet', detail: 'Lightweight with MIPS safety' },
-      { name: 'Bike Lock', detail: 'Heavy-duty U‑lock with cable' },
-      { name: 'Bike Light Set', detail: 'USB front and rear lights' },
-      { name: 'Electric Scooter', detail: '350W motor, 30km range' },
-      { name: 'Luggage 24"', detail: 'Hardshell spinner suitcase' },
-      { name: 'Travel Adapter', detail: 'Universal plug with PD' },
-      { name: 'Passport Holder', detail: 'RFID blocking leather wallet' },
-      { name: 'Sunglasses', detail: 'Polarized UV400 protection' },
-      { name: 'Winter Jacket', detail: 'Waterproof insulated parka' },
-      { name: 'Running Shoes', detail: 'Breathable cushioning trainers' },
-      { name: 'Hoodie', detail: 'Fleece-lined zip hoodie' },
-      { name: 'Backpack', detail: 'Anti-theft laptop backpack 15.6"' },
-      { name: 'Leather Belt', detail: 'Full-grain reversible belt' },
-      { name: 'Wallet', detail: 'Slim RFID blocking card holder' },
-      { name: 'Wrist Watch', detail: 'Quartz analog stainless steel' },
-      { name: 'Desk Organizer', detail: 'Metal mesh file organizer' },
-      { name: 'Cable Management Box', detail: 'Hide power strip and cords' },
-      { name: 'Surge Protector', detail: '8 outlets with USB ports' },
-      { name: 'Smart Thermostat', detail: 'Learning temperature control' },
-      { name: 'Video Projector', detail: '1080p native, 300" display' },
-      { name: 'Projection Screen', detail: '120" foldable anti-crease' },
-      { name: 'HD Capture Card', detail: '1080p60 USB streaming device' },
-      { name: 'Microphone', detail: 'USB condenser with pop filter' },
-      { name: 'Audio Interface', detail: '2‑in/2‑out 24‑bit 192kHz' },
-      { name: 'Studio Headphones', detail: 'Over‑ear monitoring headphones' },
-      { name: 'Graphics Tablet', detail: '8192 levels pen tablet' },
-      { name: 'RGB Light Strip', detail: 'Smart LED strip, music sync' },
-      { name: 'Smart Scale', detail: 'Body composition Bluetooth scale' },
-      { name: 'Massage Gun', detail: 'Percussion deep tissue massager' },
-      { name: 'First Aid Kit', detail: 'Comprehensive home emergency kit' },
-      { name: 'Fire Extinguisher', detail: 'ABC dry chemical 1kg' },
-      { name: 'Safe Box', detail: 'Digital keypad home safe' }
-    ];
+    let itemNames: { name: string; detail: string }[] = [];
+    try {
+      const itemsPath = path.join(__dirname, '..', 'data', 'items_data.json');
+      const raw = fs.readFileSync(itemsPath, 'utf-8');
+      const parsed = JSON.parse(raw) as { name: string; detail: string }[];
+      itemNames = (parsed || []).slice(0, 100);
+    } catch (e) {
+      console.warn('items_data.json not found or invalid. Falling back to generated items.');
+      for (let i = 1; i <= 100; i++) {
+        itemNames.push({ name: `General Item ${i}`, detail: `Generic description for item ${i}` });
+      }
+    }
 
     // Ensure exactly 100 entries (pad if fewer)
     while (itemNames.length < 100) {
@@ -264,26 +173,24 @@ export class OrderService {
     const mockOrders: Order[] = [];
 
     const orderTypes: OrderType[] = ['ONLINE','OFFLINE','INSTORE','MARKETPLACE','CALLCENTER'];
-
-    const customerNames = [
-      'Nguyen Van A', 'Tran Thi B', 'Le Van C', 'Pham Thi D', 'Hoang Van E',
-      'Vu Thi F', 'Do Van G', 'Bui Thi H', 'Dang Van I', 'Ngo Thi K',
-      'Nguyen Thi L', 'Tran Van M', 'Le Van N', 'Pham Van O', 'Hoang Van P',
-      'Vu Van Q', 'Do Van R', 'Bui Van S', 'Dang Van T', 'Ngo Van U',
-      'Nguyen Thi V', 'Tran Van W', 'Le Van X', 'Pham Van Y', 'Hoang Van Z',
-      'Vu Van AA', 'Do Van BB', 'Bui Van CC', 'Dang Van DD', 'Ngo Van EE',
-      'Nguyen Thi FF', 'Tran Van GG', 'Le Van HH', 'Pham Van II', 'Hoang Van JJ',
-      'Vu Van KK', 'Do Van LL', 'Bui Van MM', 'Dang Van NN', 'Ngo Van OO',
-      'Nguyen Thi PP', 'Tran Van QQ', 'Le Van RR', 'Pham Van SS', 'Hoang Van TT',
-      'Vu Van UU', 'Do Van VV', 'Bui Van WW', 'Dang Van XX', 'Ngo Van YY',
-      'Nguyen Thi ZZ', 'Tran Van AA', 'Le Van BB', 'Pham Van CC', 'Hoang Van DD',
-      'Vu Van EE', 'Do Van FF', 'Bui Van GG', 'Dang Van HH', 'Ngo Van II',
-      'Nguyen Thi JJ', 'Tran Van KK', 'Le Van LL', 'Pham Van MM', 'Hoang Van NN',
-      'Vu Van OO', 'Do Van PP', 'Bui Van QQ', 'Dang Van RR', 'Ngo Van SS',
-      'Nguyen Thi TT', 'Tran Van UU', 'Le Van VV', 'Pham Van WW', 'Hoang Van XX',
-      'Vu Van YY', 'Do Van ZZ', 'Bui Van AAA', 'Dang Van BBB', 'Ngo Van CCC',
-      'Nguyen Thi DDD', 'Tran Van EEE', 'Le Van FFF', 'Pham Van GGG', 'Hoang Van HHH'
-    ];
+    let customerNames: string[] = [];
+    try {
+      const namesPath = path.join(__dirname, '..', 'data', 'customer_names_en.json');
+      const raw = fs.readFileSync(namesPath, 'utf-8');
+      const parsed = JSON.parse(raw) as string[];
+      customerNames = Array.isArray(parsed) && parsed.length > 0 ? parsed : [];
+    } catch (e) {
+      // ignore
+    }
+    if (customerNames.length === 0) {
+      customerNames = [
+        'Nguyen Van A', 'Tran Thi B', 'Le Van C', 'Pham Thi D', 'Hoang Van E',
+        'Vu Thi F', 'Do Van G', 'Bui Thi H', 'Dang Van I', 'Ngo Thi K',
+        'Nguyen Thi L', 'Tran Van M', 'Le Van N', 'Pham Van O', 'Hoang Van P',
+        'Vu Van Q', 'Do Van R', 'Bui Van S', 'Dang Van T', 'Ngo Van U',
+        'Nguyen Thi V', 'Tran Van W', 'Le Van X', 'Pham Van Y', 'Hoang Van Z'
+      ];
+    }
 
     for (let i = 0; i < count; i++) {
       const orderId = `ORD-${Date.now()}-${i + 1}`;
