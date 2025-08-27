@@ -1,0 +1,83 @@
+version: '3.8'
+
+networks:
+  mon:
+    driver: bridge
+
+volumes:
+  prom_data:
+  grafana_data:
+  airflow_data:
+
+services:
+  pushgateway:
+    image: prom/pushgateway:v1.8.0
+    container_name: pushgateway
+    ports:
+      - "9091:9091"
+    networks: [mon]
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: prom
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules:/etc/prometheus/rules:ro
+      - prom_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+    ports:
+      - "9090:9090"
+    networks: [mon]
+
+  mimir:
+    image: grafana/mimir:2.12.0
+    container_name: mimir
+    command: ["-target=all", "-config.expand-env=true"]
+    environment:
+      MIMIR_SERVER_HTTP_LISTEN_PORT: 9009
+    ports:
+      - "9009:9009"
+    networks: [mon]
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager/config.yml:/etc/alertmanager/config.yml:ro
+    command: ["--config.file=/etc/alertmanager/config.yml"]
+    ports:
+      - "9093:9093"
+    networks: [mon]
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    networks: [mon]
+
+  airflow:
+    image: apache/airflow:2.9.3
+    container_name: airflow
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__WEBSERVER__RBAC: "true"
+      _PIP_ADDITIONAL_REQUIREMENTS: "psycopg2-binary requests"
+      OMS_API_KEY: "0x9f299A715cb6aF84e93ba90371538Ddf130E1ec0021hf902"
+      OMS_URL: "http://host.docker.internal:3001"
+      PG_DSN: "dbname=lotus_o2o user=lotus_user password=lotus_password host=host.docker.internal port=5432"
+    ports:
+      - "8080:8080"
+    volumes:
+      - airflow_data:/opt/airflow
+      - ./airflow/dags:/opt/airflow/dags
+    command: ["bash", "-lc", "airflow db migrate || airflow db init; airflow users create -u admin -p admin -r Admin -e admin@example.com -f Admin -l User || true; airflow webserver & exec airflow scheduler"]
+    networks: [mon]

@@ -1,0 +1,20 @@
+groups:
+  - name: o2o.rules
+    rules:
+      - alert: NoNewOrders
+        expr: increase(o2o_orders_ingested_total[10m]) == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: No new orders in last 10 minutes
+          description: Ingestion metric did not increase in 10 minutes.
+
+      - alert: TooManyFailures
+        expr: (o2o_orders_failed_total / o2o_orders_ingested_total) > 0.05
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: Failure ratio exceeded 5%
+          description: Failures over 5% threshold in the last 10 minutes.
