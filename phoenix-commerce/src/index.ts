@@ -58,7 +58,7 @@ app.use('*', (req, res) => {
 });
 
 // Schedule order processing simulation every 30 seconds
-cron.schedule('*/30 * * * * *', async () => {
+cron.schedule('0 */2 * * * *', async () => {
   try {
     console.log('🔄 Running scheduled order processing simulation...');
     await commerceService.simulateOrderProcessing();

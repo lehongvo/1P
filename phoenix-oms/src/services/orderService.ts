@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import pool from '../database/connection';
 import { CreateOrderRequest, Order, OrderStatus, OrderType } from '../types';
+import customerNamesData from '../data/customer_names_en.json';
+import itemsData from '../data/items_data.json';
 
 export class OrderService {
   async ensureSchema(): Promise<void> {
@@ -33,12 +33,15 @@ export class OrderService {
         customer_email VARCHAR(100) NOT NULL,
         customer_phone VARCHAR(20),
         total_amount DECIMAL(10,2) NOT NULL,
-        currency VARCHAR(3) DEFAULT 'VND',
+        currency VARCHAR(3) DEFAULT 'USD',
         order_type order_type NOT NULL DEFAULT 'ONLINE',
         status order_status NOT NULL DEFAULT 'PENDING',
         item_id INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        end_time_processing TIMESTAMP NULL,
+        end_time_payment_review TIMESTAMP NULL,
+        end_time_shipping TIMESTAMP NULL,
         payment_method VARCHAR(50),
         shipping_address TEXT,
         tracking_number VARCHAR(100),
@@ -72,13 +75,11 @@ export class OrderService {
 
     await pool.query('TRUNCATE TABLE items RESTART IDENTITY CASCADE');
     let itemNames: { name: string; detail: string }[] = [];
-    try {
-      const itemsPath = path.join(__dirname, '..', 'data', 'items_data.json');
-      const raw = fs.readFileSync(itemsPath, 'utf-8');
-      const parsed = JSON.parse(raw) as { name: string; detail: string }[];
-      itemNames = (parsed || []).slice(0, 100);
-    } catch (e) {
-      console.warn('items_data.json not found or invalid. Falling back to generated items.');
+    const parsedItems = (itemsData as unknown as { name: string; detail: string }[]) || [];
+    if (Array.isArray(parsedItems) && parsedItems.length > 0) {
+      itemNames = parsedItems.slice(0, 100);
+    } else {
+      console.warn('items_data.json empty or invalid. Falling back to generated items.');
       for (let i = 1; i <= 100; i++) {
         itemNames.push({ name: `General Item ${i}`, detail: `Generic description for item ${i}` });
       }
@@ -110,7 +111,11 @@ export class OrderService {
         o.status,
         o.order_type,
         o.total_amount,
+        o.currency,
         o.updated_at,
+        o.end_time_processing,
+        o.end_time_payment_review,
+        o.end_time_shipping,
         i.name as item_name,
         i.detail as item_detail
       FROM orders o
@@ -132,7 +137,11 @@ export class OrderService {
         o.status,
         o.order_type,
         o.total_amount,
+        o.currency,
         o.updated_at,
+        o.end_time_processing,
+        o.end_time_payment_review,
+        o.end_time_shipping,
         i.name as item_name,
         i.detail as item_detail
       FROM orders o
@@ -174,44 +183,77 @@ export class OrderService {
 
     const orderTypes: OrderType[] = ['ONLINE','OFFLINE','INSTORE','MARKETPLACE','CALLCENTER'];
     let customerNames: string[] = [];
-    try {
-      const namesPath = path.join(__dirname, '..', 'data', 'customer_names_en.json');
-      const raw = fs.readFileSync(namesPath, 'utf-8');
-      const parsed = JSON.parse(raw) as string[];
-      customerNames = Array.isArray(parsed) && parsed.length > 0 ? parsed : [];
-    } catch (e) {
-      // ignore
+    const parsedNames = (customerNamesData as unknown as string[]) || [];
+    if (Array.isArray(parsedNames) && parsedNames.length > 0) {
+      customerNames = parsedNames;
     }
-    if (customerNames.length === 0) {
-      customerNames = [
-        'Nguyen Van A', 'Tran Thi B', 'Le Van C', 'Pham Thi D', 'Hoang Van E',
-        'Vu Thi F', 'Do Van G', 'Bui Thi H', 'Dang Van I', 'Ngo Thi K',
-        'Nguyen Thi L', 'Tran Van M', 'Le Van N', 'Pham Van O', 'Hoang Van P',
-        'Vu Van Q', 'Do Van R', 'Bui Van S', 'Dang Van T', 'Ngo Van U',
-        'Nguyen Thi V', 'Tran Van W', 'Le Van X', 'Pham Van Y', 'Hoang Van Z'
-      ];
-    }
-
+    
     for (let i = 0; i < count; i++) {
       const orderId = `ORD-${Date.now()}-${i + 1}`;
-      const customerIndex = i % customerNames.length;
+      
+      const customerIndex = customerNames.length > 0
+        ? Math.floor(Math.random() * customerNames.length)
+        : 0;
       const order_type = orderTypes[Math.floor(Math.random() * orderTypes.length)];
       const randomItemId = Math.floor(Math.random() * 100) + 1; // 1..100
+      const now = new Date();
+      const addDays = (date: Date, days: number) => new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+      const addHours = (date: Date, hours: number) => new Date(date.getTime() + hours * 60 * 60 * 1000);
+      const randInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+      // Generate timeline per order_type
+      let end_time_processing: Date;
+      let end_time_shipping: Date;
+      let end_time_payment_review: Date;
+
+      if (order_type === 'ONLINE' || order_type === 'CALLCENTER') {
+        end_time_processing = addDays(now, randInt(1, 2));
+        end_time_shipping = addDays(end_time_processing, randInt(1, 2));
+        end_time_payment_review = addHours(end_time_shipping, 2);
+      } else {
+        end_time_processing = addDays(now, randInt(1, 2));
+        end_time_payment_review = addHours(end_time_processing, 2);
+        end_time_shipping = addDays(end_time_payment_review, randInt(1, 2));
+      }
       
       const order: Order = {
         order_id: orderId,
         customer_id: `CUST-${customerIndex + 1}`,
         customer_name: customerNames[customerIndex],
-        customer_email: `customer${customerIndex + 1}@example.com`,
-        customer_phone: `090${Math.floor(Math.random() * 9000000) + 1000000}`,
-        total_amount: Math.floor(Math.random() * 40000000) + 1000000,
-        currency: 'VND',
+        customer_email: (() => {
+          const raw = customerNames[customerIndex] || `customer${customerIndex + 1}`;
+          const local = raw
+            .toLowerCase()
+            .normalize('NFKD')
+            .replace(/[^a-z0-9\s.-]/g, '')
+            .trim()
+            .replace(/\s+/g, '.');
+          return `${local || 'customer'}.${customerIndex + 1}@gmail.com`;
+        })(),
+        customer_phone: (() => {
+          // Generate NANP-compliant number: +1-AAA-XXX-XXXX (A and X 2-9 for area/exchange start)
+          const randDigit = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+          const area = `${randDigit(2,9)}${randDigit(0,9)}${randDigit(0,9)}`;
+          const exchange = `${randDigit(2,9)}${randDigit(0,9)}${randDigit(0,9)}`;
+          const line = `${randDigit(0,9)}${randDigit(0,9)}${randDigit(0,9)}${randDigit(0,9)}`;
+          return `+1-${area}-${exchange}-${line}`;
+        })(),
+        total_amount: (() => {
+          const min = 10;   // $10.00
+          const max = 1000; // $1000.00
+          const value = Math.random() * (max - min) + min;
+          return Math.round(value * 100) / 100; // two decimals
+        })(),
+        currency: 'USD',
         order_type,
         status: 'PENDING',
         item_id: randomItemId,
         payment_method: 'CREDIT_CARD',
         shipping_address: `${Math.floor(Math.random() * 100) + 1} Street, District ${Math.floor(Math.random() * 20) + 1}, Ho Chi Minh City`,
-        notes: `Mock order ${i + 1} - PENDING`
+        notes: `Mock order ${i + 1} - PENDING`,
+        end_time_processing,
+        end_time_payment_review,
+        end_time_shipping
       };
 
       mockOrders.push(order);
@@ -229,9 +271,18 @@ export class OrderService {
       const orderId = `ORD-${Date.now()}-${uuidv4().substring(0, 8)}`;
       
       const orderQuery = `
-        INSERT INTO orders (order_id, customer_id, customer_name, customer_email, customer_phone, 
-                           total_amount, currency, order_type, status, payment_method, shipping_address, notes, item_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8::order_type, $9, $10, $11, $12, $13)
+        INSERT INTO orders (
+          order_id, customer_id, customer_name, customer_email, customer_phone,
+          total_amount, currency, order_type, status,
+          payment_method, shipping_address, notes, item_id,
+          end_time_processing, end_time_payment_review, end_time_shipping
+        )
+        VALUES (
+          $1, $2, $3, $4, $5,
+          $6, $7, $8::order_type, $9,
+          $10, $11, $12, $13,
+          $14, $15, $16
+        )
         RETURNING *
       `;
       
@@ -242,13 +293,16 @@ export class OrderService {
         orderData.customer_email,
         orderData.customer_phone,
         orderData.total_amount,
-        orderData.currency || 'VND',
+        orderData.currency || 'USD',
         (orderData.order_type || 'ONLINE'),
         'PENDING',
         orderData.payment_method,
         orderData.shipping_address,
         orderData.notes || null,
-        orderData.item_id || null
+        orderData.item_id || null,
+        (orderData as any).end_time_processing || null,
+        (orderData as any).end_time_payment_review || null,
+        (orderData as any).end_time_shipping || null
       ];
       
       const orderResult = await client.query(orderQuery, orderValues);
@@ -308,6 +362,9 @@ export class OrderService {
         o.status,
         o.created_at,
         o.updated_at,
+        o.end_time_processing,
+        o.end_time_payment_review,
+        o.end_time_shipping,
         o.payment_method,
         o.shipping_address,
         o.tracking_number,
@@ -371,7 +428,10 @@ export class OrderService {
           payment_method: order.payment_method,
           shipping_address: order.shipping_address,
           notes: order.notes,
-          item_id: order.item_id
+          item_id: order.item_id,
+          end_time_processing: order.end_time_processing,
+          end_time_payment_review: order.end_time_payment_review,
+          end_time_shipping: order.end_time_shipping
         } as CreateOrderRequest;
         
         await this.createOrder(orderData);

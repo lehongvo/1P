@@ -22,6 +22,9 @@ export interface Order {
   item_id?: number;
   created_at?: Date;
   updated_at?: Date;
+  end_time_processing?: Date | null;
+  end_time_payment_review?: Date | null;
+  end_time_shipping?: Date | null;
   payment_method?: string;
   shipping_address?: string;
   tracking_number?: string;

@@ -66,7 +66,7 @@ app.use('*', (req, res) => {
   });
 });
 
-// Auto-advance cron (every 30 seconds)
+// Auto-advance cron (every 2 minutes)
 const terminalStatuses: OrderStatus[] = ['COMPLETE','CLOSED','CANCELED','FRAUD'];
 const progression: OrderStatus[] = [
   'PENDING',
@@ -96,8 +96,9 @@ const service = new OrderService();
   }
 })();
 
-cron.schedule('*/30 * * * * *', async () => {
+cron.schedule('0 */2 * * * *', async () => {
   try {
+    console.log('🌱Start: Auto-advance cron (every 2 minutes)');
     const inProgress = await (async () => {
       const result = await service.getOrders(500, 0);
       return result.filter((o: any) => !terminalStatuses.includes(o.status));
@@ -121,8 +122,25 @@ cron.schedule('*/30 * * * * *', async () => {
         await service.updateOrderStatus(order.order_id, next, 'Auto-advanced by OMS cron (97%)');
       }
     }
+    console.log('🌱End: Auto-advance cron (every 2 minutes)');
   } catch (e) {
     console.error('Auto-advance cron error:', e);
+  }
+});
+
+// Seed mock data every 5 minutes
+cron.schedule('0 */5 * * * *', async () => {
+  try {
+    console.log('🌱Start: Seeding mock data via cron (every 5 minutes)');
+    await fetch(`http://localhost:${PORT}/api/v1/seed-mock-data`, {
+      method: 'POST',
+      headers: {
+        'x-api-key': DATA_API_KEY
+      }
+    });
+    console.log('🌱End: Seeded mock data via cron (every 5 minutes)');
+  } catch (e) {
+    console.error('Seed cron error:', e);
   }
 });
 
@@ -131,5 +149,6 @@ app.listen(PORT, () => {
   console.log(`📊 Health check: http://localhost:${PORT}/api/v1/health`);
   console.log(`📦 Orders API: http://localhost:${PORT}/api/v1/orders`);
   console.log(`🌱 Seed mock data: http://localhost:${PORT}/api/v1/seed-mock-data`);
-  console.log('⏰ OMS auto-advance cron: every 30 seconds (97% main path, 3% exception)');
+  console.log('⏰ OMS auto-advance cron: every 2 minutes (97% main path, 3% exception)');
+  console.log('⏰ OMS seed cron: every 5 minutes');
 });
