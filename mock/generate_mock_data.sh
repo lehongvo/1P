@@ -428,7 +428,7 @@ insert_promotion_errors() {
         
         # Database connection parameters
         local DB_HOST="localhost"
-        local DB_PORT="5432"
+        local DB_PORT="5433"
         local DB_NAME="lotus_o2o"
         local DB_USER="lotus_user"
         local DB_PASSWORD="lotus_password"
