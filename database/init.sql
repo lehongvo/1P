@@ -77,3 +77,31 @@ BEGIN
   END IF;
 END
 $$;
+
+-- Promotion table for tracking promotion files
+CREATE TABLE IF NOT EXISTS promotion (
+    id SERIAL PRIMARY KEY,
+    path_file TEXT NOT NULL,
+    status INTEGER DEFAULT 4,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    promotion VARCHAR(50),
+    item_code VARCHAR(50)
+);
+
+-- Create indexes for promotion table
+CREATE INDEX IF NOT EXISTS idx_promotion_status ON promotion(status);
+CREATE INDEX IF NOT EXISTS idx_promotion_created_at ON promotion(created_at);
+CREATE INDEX IF NOT EXISTS idx_promotion_promotion ON promotion(promotion);
+
+-- Create trigger to update updated_at timestamp for promotion table
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_trigger WHERE tgname = 'update_promotion_updated_at'
+  ) THEN
+    CREATE TRIGGER update_promotion_updated_at BEFORE UPDATE ON promotion
+      FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+  END IF;
+END
+$$;

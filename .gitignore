@@ -107,3 +107,6 @@ Thumbs.db
 *.spec.js
 test-results/
 playwright-report/
+
+
+data/

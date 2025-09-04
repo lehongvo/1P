@@ -57,6 +57,16 @@ services:
       - phoenix-oms
     networks:
       - lotus_network
+  
+  sftp:
+    image: "emberstack/sftp"
+    container_name: lotus-sftp-1
+    ports:
+      - "2222:22"
+    volumes:
+      - ./config/sftp.sample.json:/app/config/sftp.json:ro
+      - ./data/csv:/home/demo/sftp/:rw
+    restart: always
 
 volumes:
   postgres_data:
