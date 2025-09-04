@@ -280,11 +280,11 @@ generate_promotion_files() {
             continue
         fi
         
-        # Generate promotion data with single unique ID
-        promo_id="PROMO$(printf '%05d' $i)"
+        # Generate promotion data with single unique ID + date + timestamp
+        promo_id="PROMO${DATE_PATTERN}${timestamp}"
         
-        item1="ITEM$(printf '%05d' $((i*2-1)))"
-        item2="ITEM$(printf '%05d' $((i*2)))"
+        item2="ITEM${DATE_PATTERN}${timestamp}"
+        item1="ITEM${DATE_PATTERN}$((${timestamp} - 1))"
         
         discount1=${discounts[$((RANDOM % ${#discounts[@]}))]}
         discount2=${discounts[$((RANDOM % ${#discounts[@]}))]}
@@ -298,9 +298,9 @@ generate_promotion_files() {
         fi
         
         cat > "$file_path" << EOF
-PromoID,Item,Discount,StartDate,EndDate,Batch
-$promo_id,$item1,$discount1,$INPUT_DATE,$end_date,$timestamp
-$promo_id,$item2,$discount2,$INPUT_DATE,$end_date,$timestamp
+PromoID,Item,Discount,StartDate,EndDate,Batch,Status
+$promo_id,$item1,$discount1,$INPUT_DATE,$end_date,$timestamp,1
+$promo_id,$item2,$discount2,$INPUT_DATE,$end_date,$timestamp,4
 EOF
         
         if [ $((i % 20)) -eq 0 ]; then
@@ -458,13 +458,13 @@ insert_promotion_errors() {
                     status INTEGER DEFAULT 4,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    promotion VARCHAR(50),
+                    promotion_id VARCHAR(50),
                     item_code VARCHAR(50)
                 );
                 
                 CREATE INDEX IF NOT EXISTS idx_promotion_status ON promotion(status);
                 CREATE INDEX IF NOT EXISTS idx_promotion_created_at ON promotion(created_at);
-                CREATE INDEX IF NOT EXISTS idx_promotion_promotion ON promotion(promotion);
+                CREATE INDEX IF NOT EXISTS idx_promotion_promotion_id ON promotion(promotion_id);
             \"" &>/dev/null
             
             if [ $? -eq 0 ]; then
@@ -490,7 +490,7 @@ insert_promotion_errors() {
                 local item_code=$(head -2 "$file" | tail -1 | cut -d',' -f2)
                 
                 # Docker container path (where file will be uploaded)
-                local docker_path="/home/demo/soa/Data/ITSRPC/outgoing_ok/RPR/TH/$(basename "$file")"
+                local docker_path="/home/demo/sftp/rpm/processed/$(basename "$file")"
                 
                 # Generate status with 2% probability for status 4, 98% for status 1
                 local status_chance=$((RANDOM % 100))
@@ -502,7 +502,7 @@ insert_promotion_errors() {
                 # Insert record into promotion table with timeout
                 timeout 3 bash -c "
                     PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -c \"
-                        INSERT INTO promotion (path_file, status, promotion, item_code)
+                        INSERT INTO promotion (path_file, status, promotion_id, item_code)
                         VALUES ('$docker_path', $status, '$promotion_id', '$item_code');
                     \"
                 " &>/dev/null
@@ -545,7 +545,7 @@ insert_promotion_errors() {
         
         # Get total count of inserted records (with timeout)
         local total_promotions=$(timeout 2 bash -c "PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -t -c \"SELECT COUNT(*) FROM promotion WHERE DATE(created_at) = '$INPUT_DATE';\"" 2>/dev/null | tr -d ' ' || echo "N/A")
-        local total_errors=$(timeout 2 bash -c "PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -t -c \"SELECT COUNT(*) FROM promotion_error WHERE DATE(created_at) = '$INPUT_DATE';\"" 2>/dev/null | tr -d ' ' || echo "N/A")
+        local total_errors="0"
         
         echo -e "${GREEN}✅ Promotion records inserted: $total_promotions records${NC}"
         echo -e "${GREEN}✅ Promotion error records inserted: $total_errors records${NC}"

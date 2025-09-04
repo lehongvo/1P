@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS promotion (
     status INTEGER DEFAULT 4,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    promotion VARCHAR(50),
+    promotion_id VARCHAR(50),
     item_code VARCHAR(50)
 );
 
