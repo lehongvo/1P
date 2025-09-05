@@ -87,6 +87,9 @@ ensure_price_table_startup() {
         CREATE INDEX IF NOT EXISTS idx_price_status ON price(status);
         CREATE INDEX IF NOT EXISTS idx_price_created_at ON price(created_at);
         CREATE INDEX IF NOT EXISTS idx_price_item_code ON price(item_code);
+        ALTER TABLE price ADD COLUMN IF NOT EXISTS item VARCHAR(50);
+        ALTER TABLE price ADD COLUMN IF NOT EXISTS price_change_display_id VARCHAR(100);
+        CREATE INDEX IF NOT EXISTS idx_price_item ON price(item);
     " &>/dev/null || true
 }
 
@@ -180,7 +183,15 @@ insert_single_price_record_miss() {
     local rand=$((RANDOM % 100 + 1))
     if [ $rand -le 10 ]; then status_value=2; fi
 
-    _insert_price_row_core "$docker_path" "$item_code" "$status_value"
+    # Random price_change_display_id
+    local display_texts=("PRICE_UPDATE_001" "DISCOUNT_APPLIED" "SEASONAL_CHANGE" "BULK_PRICING" "PROMO_ACTIVE" "MARKET_ADJUSTMENT" "INVENTORY_CLEAR" "NEW_PRODUCT_LAUNCH")
+    local price_change_display_id=${display_texts[$((RANDOM % ${#display_texts[@]}))]}
+
+    # Insert with extended fields (item, price_change_display_id)
+    PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+        INSERT INTO price (path_file, status, item, action, price_change_display_id)
+        VALUES ('$docker_path', $status_value, '$item_code', '', '$price_change_display_id');
+    " &>/dev/null || true
 }
 
 # =============================================================================
@@ -198,7 +209,15 @@ insert_single_price_record_unit() {
     local rand=$((RANDOM % 100 + 1))
     if [ $rand -le 10 ]; then status_value=3; fi
 
-    _insert_price_row_core "$docker_path" "$item_code" "$status_value"
+    # Random price_change_display_id
+    local display_texts=("PRICE_UPDATE_001" "DISCOUNT_APPLIED" "SEASONAL_CHANGE" "BULK_PRICING" "PROMO_ACTIVE" "MARKET_ADJUSTMENT" "INVENTORY_CLEAR" "NEW_PRODUCT_LAUNCH")
+    local price_change_display_id=${display_texts[$((RANDOM % ${#display_texts[@]}))]}
+
+    # Insert with extended fields (item, price_change_display_id)
+    PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+        INSERT INTO price (path_file, status, item, action, price_change_display_id)
+        VALUES ('$docker_path', $status_value, '$item_code', '', '$price_change_display_id');
+    " &>/dev/null || true
 }
 
 # =============================================================================
@@ -422,7 +441,7 @@ main() {
     
     # Keep the service running
     while true; do
-        sleep 10
+        sleep 60
         echo -e "${BLUE}🏁 Starting Cloud Run mock data generation process...${NC}"
         echo -e "${BLUE}📅 Processing date: $INPUT_DATE${NC}"
         echo -e "${BLUE}📂 Data structure: $BASE_DIR/$DATE_DIR_FORMAT/...${NC}"
