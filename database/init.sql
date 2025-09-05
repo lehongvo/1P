@@ -108,3 +108,31 @@ BEGIN
   END IF;
 END
 $$;
+
+-- Price table for tracking price files
+CREATE TABLE IF NOT EXISTS price (
+    id SERIAL PRIMARY KEY,
+    path_file TEXT NOT NULL,
+    status INTEGER DEFAULT 4,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    item_code VARCHAR(50),
+    action VARCHAR(50) DEFAULT ''
+);
+
+-- Create indexes for price table
+CREATE INDEX IF NOT EXISTS idx_price_status ON price(status);
+CREATE INDEX IF NOT EXISTS idx_price_created_at ON price(created_at);
+CREATE INDEX IF NOT EXISTS idx_price_item_code ON price(item_code);
+
+-- Create trigger to update updated_at timestamp for price table
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_trigger WHERE tgname = 'update_price_updated_at'
+  ) THEN
+    CREATE TRIGGER update_price_updated_at BEFORE UPDATE ON price
+      FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+  END IF;
+END
+$$;

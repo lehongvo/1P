@@ -206,19 +206,19 @@ check_and_create_directories() {
 # =============================================================================
 generate_price_files() {
     echo -e "${GREEN}📊 Generating $TOTAL_FILES Price Files (.ods)...${NC}"
-    
+
     local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
-    
+
     for i in $(seq 1 $TOTAL_FILES); do
         # Generate random timestamp for realistic file naming
         hour=$((5 + RANDOM % 8))      # Random hour between 05-12
         minute=$((RANDOM % 60))       # Random minute
         second=$((RANDOM % 60))       # Random second
         timestamp=$(printf "%02d%02d%02d" $hour $minute $second)
-        
+
         file_name="TH_PRCH_${DATE_PATTERN}${timestamp}.ods"
         file_path="$date_dir/price/$file_name"
-        
+
         # Skip if file already exists
         if [ -f "$file_path" ]; then
             if [ $((i % 20)) -eq 0 ]; then
@@ -226,27 +226,47 @@ generate_price_files() {
             fi
             continue
         fi
-        
+
         # Generate random price data
         price1=$(echo "scale=2; $RANDOM/100" | bc)
         price2=$(echo "scale=2; $RANDOM/100" | bc)
         price3=$(echo "scale=2; $RANDOM/100" | bc)
-        
-        item1="ITEM$(printf '%05d' $((i*3-2)))"
-        item2="ITEM$(printf '%05d' $((i*3-1)))"
-        item3="ITEM$(printf '%05d' $((i*3)))"
-        
+
+        item1="ITEM${DATE_PATTERN}$((10#${timestamp} - 2))"
+        item2="ITEM${DATE_PATTERN}$((10#${timestamp} - 1))"
+        item3="ITEM${DATE_PATTERN}${timestamp}"
+
+        # Random locations (3rd row intentionally missing)
+        locations=("Bangkok" "Chiang Mai" "Phuket" "Pattaya" "Krabi" "Hua Hin" "Koh Samui" "Ayutthaya")
+        location1=${locations[$((RANDOM % ${#locations[@]}))]}
+        location2=${locations[$((RANDOM % ${#locations[@]}))]}
+        location3=""
+
+        # Random types (1-10)
+        type1=$((RANDOM % 10 + 1))
+        type2=$((RANDOM % 10 + 1))
+        type3=$((RANDOM % 10 + 1))
+
+        # Random units
+        units=("kg" "box" "g" "ml" "pcs" "liter" "pack" "bottle")
+        unit1=${units[$((RANDOM % ${#units[@]}))]}
+        unit2=${units[$((RANDOM % ${#units[@]}))]}
+        unit3=${units[$((RANDOM % ${#units[@]}))]}
+
         cat > "$file_path" << EOF
-Price,Item,Store,Date,Batch
-$price1,$item1,STORE01,$INPUT_DATE,$timestamp
-$price2,$item2,STORE01,$INPUT_DATE,$timestamp
-$price3,$item3,STORE02,$INPUT_DATE,$timestamp
+Price,Item,Store,Date,Batch,Location,Type,Unit
+$price1,$item1,STORE01,$INPUT_DATE,$timestamp,$location1,$type1,$unit1
+$price2,$item2,STORE01,$INPUT_DATE,$timestamp,$location2,$type2,$unit2
+$price3,$item3,STORE02,$INPUT_DATE,$timestamp,$location3,$type3,$unit3
 EOF
-        
+
+        # Insert price record into DB immediately (use 3rd row item)
+        insert_single_price_record "$file_path" "$item3" "$timestamp"
+
         if [ $((i % 20)) -eq 0 ]; then
             echo -e "${YELLOW}  Generated $i/$TOTAL_FILES price files...${NC}"
         fi
-        
+
         # Small delay to ensure unique timestamps
         sleep 0.1
     done
@@ -322,7 +342,6 @@ EOF
 insert_promotion_records() {
     echo -e "${GREEN}📊 Inserting promotion records into database...${NC}"
     
-    # Database connection parameters
     local DB_HOST="localhost"
     local DB_PORT="5432"
     local DB_NAME="lotus_o2o"
@@ -627,6 +646,62 @@ show_statistics() {
     echo -e "  🔹 Promotion files: $(echo $docker_promotion | tr -d ' \r')"
     echo -e "  🔹 Feedback Price files: $(echo $docker_feedback_price | tr -d ' \r')"
     echo -e "  🔹 Feedback Promotion files: $(echo $docker_feedback_promotion | tr -d ' \r')"
+}
+
+# =============================================================================
+# FUNCTION: Insert single price record into PostgreSQL database
+# =============================================================================
+insert_single_price_record() {
+    local file_path="$1"
+    local item_code="$2"
+    local file_timestamp="$3"
+
+    # Database connection parameters
+    local DB_HOST="localhost"
+    local DB_PORT="5432"
+    local DB_NAME="lotus_o2o"
+    local DB_USER="lotus_user"
+    local DB_PASSWORD="lotus_password"
+
+    # Ensure psql is available
+    if ! command -v psql &> /dev/null; then
+        return 0
+    fi
+
+    # Quick connection test
+    if ! PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c 'SELECT 1;' &>/dev/null; then
+        return 0
+    fi
+
+    # Ensure price table exists (with indexes)
+    PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+        CREATE TABLE IF NOT EXISTS price (
+            id SERIAL PRIMARY KEY,
+            path_file TEXT NOT NULL,
+            status INTEGER DEFAULT 4,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            item_code VARCHAR(50),
+            action VARCHAR(50) DEFAULT ''
+        );
+        CREATE INDEX IF NOT EXISTS idx_price_status ON price(status);
+        CREATE INDEX IF NOT EXISTS idx_price_created_at ON price(created_at);
+        CREATE INDEX IF NOT EXISTS idx_price_item_code ON price(item_code);
+    " &>/dev/null || true
+
+    # Path as expected by downstream
+    local docker_path="/home/demo/sftp/rpm/processed/$(basename "$file_path")"
+
+    # Random status: 90% status=1, 10% status=2
+    local status=1
+    local rand=$((RANDOM % 100 + 1))
+    if [ $rand -le 10 ]; then status=2; fi
+
+    # Insert row
+    PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+        INSERT INTO price (path_file, status, item_code, action)
+        VALUES ('$docker_path', $status, '$item_code', '');
+    " &>/dev/null || true
 }
 
 # =============================================================================
