@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 INPUT_DATE=${INPUT_DATE:-$(date '+%Y-%m-%d')}
-BASE_DIR=${BASE_DIR:-"/app/data"}
+BASE_DIR=${BASE_DIR:-"/tmp/data"}
 DATE_DIR_FORMAT="$INPUT_DATE"
 DATE_PATTERN=$(echo "$INPUT_DATE" | tr -d '-')
 TOTAL_FILES=1
@@ -192,7 +192,7 @@ insert_promotion_records() {
         local timestamp=$(date '+%Y%m%d%H%M%S')
         local promotion_id="PROMO${DATE_PATTERN}$((i + 200))"
         local item_code="ITEM${DATE_PATTERN}$((i + 200))"
-        local cloud_path="/app/data/TH_PROMPRCH_${DATE_PATTERN}${timestamp}.ods"
+        local cloud_path="$BASE_DIR/TH_PROMPRCH_${DATE_PATTERN}${timestamp}.ods"
         
         # Status probability configuration (50% success, 50% failure)
         local SUCCESS_RATE=80  # 50% chance for status 1 (success)
@@ -286,7 +286,7 @@ main() {
     
     # Keep the service running
     while true; do
-        # sleep 60
+        sleep 60
         echo -e "${BLUE}🏁 Starting Cloud Run mock data generation process...${NC}"
         echo -e "${BLUE}📅 Processing date: $INPUT_DATE${NC}"
         echo -e "${BLUE}📂 Data structure: $BASE_DIR/$DATE_DIR_FORMAT/...${NC}"
