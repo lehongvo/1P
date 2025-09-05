@@ -284,7 +284,7 @@ generate_promotion_files() {
         promo_id="PROMO${DATE_PATTERN}${timestamp}"
         
         item2="ITEM${DATE_PATTERN}${timestamp}"
-        item1="ITEM${DATE_PATTERN}$((${timestamp} - 1))"
+        item1="ITEM${DATE_PATTERN}$((${timestamp#0} - 1))"
         
         discount1=${discounts[$((RANDOM % ${#discounts[@]}))]}
         discount2=${discounts[$((RANDOM % ${#discounts[@]}))]}
@@ -312,8 +312,100 @@ EOF
     done
     echo -e "${GREEN}✅ Promotion files generated: $TOTAL_FILES files${NC}"
 
-    # Insert error records into promotion_error table
-    # insert_promotion_errors
+    # Insert promotion records into database
+    insert_promotion_records
+}
+
+# =============================================================================
+# FUNCTION: Insert promotion records into PostgreSQL database
+# =============================================================================
+insert_promotion_records() {
+    echo -e "${GREEN}📊 Inserting promotion records into database...${NC}"
+    
+    # Database connection parameters
+    local DB_HOST="localhost"
+    local DB_PORT="5432"
+    local DB_NAME="lotus_o2o"
+    local DB_USER="lotus_user"
+    local DB_PASSWORD="lotus_password"
+    
+    # Quick check if PostgreSQL is accessible
+    if ! command -v psql &> /dev/null; then
+        echo -e "${YELLOW}⚠️ psql command not found. Skipping database operations.${NC}"
+        return 0
+    fi
+    
+    # Quick connection test
+    if ! PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;" &>/dev/null; then
+        echo -e "${YELLOW}⚠️ Cannot connect to PostgreSQL database. Skipping database operations.${NC}"
+        return 0
+    fi
+    
+    # Insert promotion records for generated files
+    echo -e "${YELLOW}📝 Inserting promotion file records...${NC}"
+    local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
+    local promotion_count=0
+    
+    # Insert records for each generated promotion file
+    for file in $date_dir/promotion/TH_PROMPRCH_${DATE_PATTERN}*.ods; do
+        if [ -f "$file" ]; then
+            # Extract promotion and item codes from file content
+            local promotion_id=$(head -2 "$file" | tail -1 | cut -d',' -f1)
+            local item_code=$(head -2 "$file" | tail -1 | cut -d',' -f2)
+            
+            # Docker container path (where file will be uploaded)
+            local docker_path="/home/demo/sftp/rpm/processed/$(basename "$file")"
+            
+            # Status probability configuration (50% success, 50% failure)
+            local SUCCESS_RATE=80  # 50% chance for status 1 (success)
+            local FAILURE_RATE=20  # 50% chance for status 4 (failure)
+            
+            # Generate status with 50% probability for status 4, 50% for status 1
+            local status_chance=$((RANDOM % 100))
+            local status=1  # Default status
+            if [ $status_chance -lt $FAILURE_RATE ]; then
+                status=4  # 50% chance for status 4
+            fi
+            
+            # Generate start_time and end_time
+            local start_time=$(date '+%Y-%m-%d %H:%M:%S')
+            local days_to_add=$((1 + RANDOM % 7))  # Random 1-7 days
+            local end_time
+            if [ "$(detect_os)" = "macos" ]; then
+                end_time=$(date -j -v+${days_to_add}d '+%Y-%m-%d %H:%M:%S')
+            else
+                end_time=$(date -d "+${days_to_add} days" '+%Y-%m-%d %H:%M:%S')
+            fi
+            
+            # Insert record into promotion table
+            if [ $status -eq 4 ]; then
+                # Insert with config_data JSON for status = 4
+                PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+                        INSERT INTO promotion (path_file, status, promotion_id, item_code, start_time, end_time, config_data)
+                        VALUES ('$docker_path', $status, '$promotion_id', '$item_code', '$start_time', '$end_time', '{\"path\": \"$docker_path\", \"status\": 1, \"updated_at\": \"$start_time\", \"created_at\": \"$start_time\", \"promotion_id\": \"$promotion_id\", \"item_code\": \"$item_code\"}');
+                    " &>/dev/null
+            else
+                # Insert without config_data for status = 1
+                PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+                        INSERT INTO promotion (path_file, status, promotion_id, item_code, start_time, end_time)
+                        VALUES ('$docker_path', $status, '$promotion_id', '$item_code', '$start_time', '$end_time');
+                    " &>/dev/null
+            fi
+            
+            local insert_result=$?
+            if [ $insert_result -eq 0 ]; then
+                ((promotion_count++))
+                if [ $status -eq 4 ]; then
+                    echo -e "${YELLOW}  📋 Config data JSON created for failed promotion: $promotion_id${NC}"
+                fi
+            fi
+        fi
+    done
+    
+    # Get total count of inserted records
+    local total_promotions=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(*) FROM promotion WHERE DATE(created_at) = '$INPUT_DATE';" 2>/dev/null | tr -d ' ' || echo "N/A")
+    
+    echo -e "${GREEN}✅ Promotion records inserted: $total_promotions records${NC}"
 }
 
 # =============================================================================
@@ -418,142 +510,6 @@ EOF
     
 }
 
-# =============================================================================
-# FUNCTION: Insert promotion error records into PostgreSQL database
-# =============================================================================
-insert_promotion_errors() {
-    # Run database operations in background to avoid blocking main script
-    {
-        echo -e "${GREEN}📊 Inserting promotion records into database...${NC}"
-        
-        # Database connection parameters
-        local DB_HOST="localhost"
-        local DB_PORT="5433"
-        local DB_NAME="lotus_o2o"
-        local DB_USER="lotus_user"
-        local DB_PASSWORD="lotus_password"
-        
-        # Quick check if PostgreSQL is accessible
-        if ! command -v psql &> /dev/null; then
-            echo -e "${YELLOW}⚠️ psql command not found. Skipping database operations.${NC}"
-            return 0
-        fi
-        
-        # Quick connection test with timeout
-        if ! timeout 2 bash -c "PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -c 'SELECT 1;'" &>/dev/null; then
-            echo -e "${YELLOW}⚠️ Cannot connect to PostgreSQL database. Skipping database operations.${NC}"
-            return 0
-        fi
-        
-        # Check if promotion table exists, create if not
-        echo -e "${YELLOW}🔍 Checking promotion table existence...${NC}"
-        local table_exists=$(timeout 3 bash -c "PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -t -c \"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'promotion');\"" 2>/dev/null | tr -d ' ')
-        
-        if [ "$table_exists" != "t" ]; then
-            echo -e "${YELLOW}📋 Creating promotion table...${NC}"
-            timeout 10 bash -c "PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -c \"
-                CREATE TABLE promotion (
-                    id SERIAL PRIMARY KEY,
-                    path_file TEXT NOT NULL,
-                    status INTEGER DEFAULT 4,
-                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    promotion_id VARCHAR(50),
-                    item_code VARCHAR(50)
-                );
-                
-                CREATE INDEX IF NOT EXISTS idx_promotion_status ON promotion(status);
-                CREATE INDEX IF NOT EXISTS idx_promotion_created_at ON promotion(created_at);
-                CREATE INDEX IF NOT EXISTS idx_promotion_promotion_id ON promotion(promotion_id);
-            \"" &>/dev/null
-            
-            if [ $? -eq 0 ]; then
-                echo -e "${GREEN}✅ Promotion table created successfully${NC}"
-            else
-                echo -e "${YELLOW}⚠️ Failed to create promotion table. Skipping database operations.${NC}"
-                return 0
-            fi
-        else
-            echo -e "${GREEN}✅ Promotion table already exists${NC}"
-        fi
-        
-        # Insert promotion records for generated files
-        echo -e "${YELLOW}📝 Inserting promotion file records...${NC}"
-        local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
-        local promotion_count=0
-        
-        # Insert records for each generated promotion file (with timeout)
-        for file in $date_dir/promotion/TH_PROMPRCH_${DATE_PATTERN}*.ods; do
-            if [ -f "$file" ]; then
-                # Extract promotion and item codes from file content
-                local promotion_id=$(head -2 "$file" | tail -1 | cut -d',' -f1)
-                local item_code=$(head -2 "$file" | tail -1 | cut -d',' -f2)
-                
-                # Docker container path (where file will be uploaded)
-                local docker_path="/home/demo/sftp/rpm/processed/$(basename "$file")"
-                
-                # Generate status with 2% probability for status 4, 98% for status 1
-                local status_chance=$((RANDOM % 100))
-                local status=1  # Default status
-                if [ $status_chance -lt 2 ]; then
-                    status=4  # 2% chance for status 4
-                fi
-                
-                # Insert record into promotion table with timeout
-                timeout 3 bash -c "
-                    PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -c \"
-                        INSERT INTO promotion (path_file, status, promotion_id, item_code)
-                        VALUES ('$docker_path', $status, '$promotion_id', '$item_code');
-                    \"
-                " &>/dev/null
-                
-                local insert_result=$?
-                if [ $insert_result -eq 0 ]; then
-                    ((promotion_count++))
-                elif [ $insert_result -eq 124 ]; then
-                    echo -e "${YELLOW}  ⏱️ Timeout inserting record for: $(basename "$file")${NC}"
-                fi
-            fi
-        done
-        
-        # Generate sample error records for promotion_error table
-        echo -e "${YELLOW}📊 Inserting promotion error records...${NC}"
-        local error_types=("VALIDATION_ERROR" "TIMEOUT_ERROR" "NETWORK_ERROR" "DATA_FORMAT_ERROR" "SYSTEM_ERROR")
-        local error_messages=(
-            "Invalid promotion data format"
-            "Connection timeout while processing promotion"
-            "Network connection failed during promotion sync"
-            "Malformed CSV data in promotion file"
-            "System error during promotion processing"
-        )
-        
-        # Insert error records for failed feedback items (with timeout)
-        for i in $(seq 1 $((TOTAL_FILES / 10))); do  # Generate errors for ~10% of files
-            local feedback_id="FBP$(printf '%05d' $((RANDOM % (TOTAL_FILES * 3) + 1)))"
-            local error_type=${error_types[$((RANDOM % ${#error_types[@]}))]}
-            local error_message=${error_messages[$((RANDOM % ${#error_messages[@]}))]}
-            local retry_count=$((RANDOM % 3))
-            
-            # Insert record into promotion_error table with timeout
-            timeout 3 bash -c "
-                PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -c \"
-                    INSERT INTO promotion_error (feedback_id, error_message, error_type, status, retry_count, processed_time)
-                    VALUES ('$feedback_id', '$error_message', '$error_type', 'FAILED', $retry_count, '$INPUT_DATE \$(date +%H:%M:%S)');
-                \"
-            " &>/dev/null
-        done
-        
-        # Get total count of inserted records (with timeout)
-        local total_promotions=$(timeout 2 bash -c "PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -t -c \"SELECT COUNT(*) FROM promotion WHERE DATE(created_at) = '$INPUT_DATE';\"" 2>/dev/null | tr -d ' ' || echo "N/A")
-        local total_errors="0"
-        
-        echo -e "${GREEN}✅ Promotion records inserted: $total_promotions records${NC}"
-        echo -e "${GREEN}✅ Promotion error records inserted: $total_errors records${NC}"
-    } &
-    
-    # Don't wait for background process - let it run asynchronously
-    echo -e "${BLUE}🔄 Database operations started in background...${NC}"
-}
 
 # =============================================================================
 # FUNCTION: Upload files to Docker SFTP Container
@@ -679,18 +635,6 @@ show_statistics() {
 start_transfer_loop() {
     local interval_seconds=30
     echo -e "${BLUE}⏱️ Starting transfer loop: every 10 minutes (includes directory checks)${NC}"
-    # Randomized clear cadence: clear every N cycles, where N ∈ [1,10]
-    local cycles_since_clear=0
-    local clear_threshold=$((1 + RANDOM % 10))
-    echo -e "${YELLOW}🧽 Will clear Docker files every ${clear_threshold} cycle(s) (randomized 1-10)${NC}"
-    # Resolve clear script absolute path once
-    local script_dir
-    script_dir=$(cd "$(dirname "$0")" && pwd)
-    local clear_script="${script_dir}/clear_docker_files.sh"
-    if [ ! -x "$clear_script" ]; then
-        echo -e "${RED}❌ Warning: clear script not executable or not found at: $clear_script${NC}"
-        echo -e "${YELLOW}💡 Ensure the script exists and is executable: chmod +x clear_docker_files.sh${NC}"
-    fi
     while true; do
         echo -e "${YELLOW}⏰ Starting new cycle at $(date)${NC}"
         
@@ -710,7 +654,6 @@ start_transfer_loop() {
         generate_feedback_price_files
         generate_feedback_promotion_files
         upload_to_docker
-        insert_promotion_errors
         fix_ownership
 
         echo -e "${YELLOW}🔄 Syncing 1P → SOA (price, promotion)...${NC}"
@@ -748,63 +691,11 @@ start_transfer_loop() {
 
         echo -e "${GREEN}✅ Cycle completed. Waiting 10 minutes until next cycle...${NC}"
         echo -e "${BLUE}⏰ Next cycle will start at $(date -d "+10 minutes" 2>/dev/null || date -v+10M 2>/dev/null || echo "in 10 minutes")${NC}"
-        
-        # Increment cycle counter and clear when threshold reached
-        cycles_since_clear=$((cycles_since_clear + 1))
-        if [ "$cycles_since_clear" -ge "$clear_threshold" ]; then
-            echo -e "${YELLOW}🧽 Reached clear threshold (${clear_threshold}). Clearing Docker files now...${NC}"
-            if [ -x "$clear_script" ]; then
-                "$clear_script" --container "$DOCKER_CONTAINER" || echo -e "${RED}❌ Clear script failed${NC}"
-            else
-                echo -e "${RED}❌ Skip clearing: clear script not available${NC}"
-            fi
-            cycles_since_clear=0
-            clear_threshold=$((1 + RANDOM % 10))
-            echo -e "${YELLOW}🎲 Next clear will happen after ${clear_threshold} cycle(s)${NC}"
-        else
-            echo -e "${BLUE}ℹ️ Cycles since last clear: ${cycles_since_clear}/${clear_threshold}${NC}"
-        fi
 
         sleep "$interval_seconds"
     done
 }
 
-# =============================================================================
-# FUNCTION: 10-minute cleanup loop (truncate file contents)
-# =============================================================================
-start_cleanup_loop() {
-    local interval_seconds=60000
-    echo -e "${BLUE}🧹 Starting cleanup loop: every 10 minutes (truncate contents in 1P/SOA/RPM)${NC}"
-    while true; do
-        echo -e "${YELLOW}🧹 Starting cleanup cycle at $(date)${NC}"
-        
-        docker exec $DOCKER_CONTAINER bash -lc "
-            set -e
-            shopt -s nullglob
-            # 1P price
-            for f in $SFTP_1P_PRICE/TH_PRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
-            # 1P promotion
-            for f in $SFTP_1P_PROMOTION/TH_PROMPRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
-            # 1P feedback
-            for f in ${SFTP_1P_FEEDBACK_PRICE/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
-            for f in ${SFTP_1P_FEEDBACK_PROMOTION/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
-            # SOA price/promotion
-            for f in $SFTP_SOA_PRICE/TH_PRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
-            for f in $SFTP_SOA_PROMOTION/TH_PROMPRCH_${DATE_PATTERN}*.ods; do : > \"$f\" || true; done
-            # SOA feedback
-            for f in ${SFTP_SOA_FEEDBACK_PRICE/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
-            for f in ${SFTP_SOA_FEEDBACK_PROMOTION/:DATETIME/$INPUT_DATE}/CP_PROMOTIONS_FEEDBACK_${DATE_FORMAT}*.csv; do : > \"$f\" || true; done
-            # RPM processed & pending
-            for f in $SFTP_RPM_PROCESSED/*; do [ -f \"$f\" ] && : > \"$f\" || true; done
-            for f in $SFTP_RPM_PENDING/*; do [ -f \"$f\" ] && : > \"$f\" || true; done
-        " >/dev/null 2>&1 || true
-
-        echo -e "${GREEN}✅ Cleanup completed. Waiting 10 minutes until next cleanup...${NC}"
-        echo -e "${BLUE}⏰ Next cleanup will start at $(date -d "+10 minutes" 2>/dev/null || date -v+10M 2>/dev/null || echo "in 10 minutes")${NC}"
-        
-        sleep "$interval_seconds"
-    done
-}
 
 # =============================================================================
 # MAIN EXECUTION
@@ -839,7 +730,6 @@ main() {
     
     # Upload to Docker (→ 1P paths)
     upload_to_docker
-    insert_promotion_errors
     
     # Fix ownership
     fix_ownership

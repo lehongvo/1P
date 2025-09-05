@@ -86,13 +86,16 @@ CREATE TABLE IF NOT EXISTS promotion (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     promotion_id VARCHAR(50),
-    item_code VARCHAR(50)
+    item_code VARCHAR(50),
+    start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    end_time TIMESTAMP,
+    config_data JSONB
 );
 
 -- Create indexes for promotion table
 CREATE INDEX IF NOT EXISTS idx_promotion_status ON promotion(status);
 CREATE INDEX IF NOT EXISTS idx_promotion_created_at ON promotion(created_at);
-CREATE INDEX IF NOT EXISTS idx_promotion_promotion ON promotion(promotion);
+CREATE INDEX IF NOT EXISTS idx_promotion_promotion_id ON promotion(promotion_id);
 
 -- Create trigger to update updated_at timestamp for promotion table
 DO $$

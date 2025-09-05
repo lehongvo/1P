@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: lotus_user
       POSTGRES_PASSWORD: lotus_password
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -26,7 +26,7 @@ services:
     environment:
       NODE_ENV: production
       DB_HOST: postgres
-      DB_PORT: 5433
+      DB_PORT: 5432
       DB_NAME: lotus_o2o
       DB_USER: lotus_user
       DB_PASSWORD: lotus_password
@@ -46,7 +46,7 @@ services:
     environment:
       NODE_ENV: production
       DB_HOST: postgres
-      DB_PORT: 5433
+      DB_PORT: 5432
       DB_NAME: lotus_o2o
       DB_USER: lotus_user
       DB_PASSWORD: lotus_password
@@ -58,15 +58,16 @@ services:
     networks:
       - lotus_network
   
-  # sftp:
-  #   image: "emberstack/sftp"
-  #   container_name: lotus-sftp-1
-  #   ports:
-  #     - "2222:22"
-  #   volumes:
-  #     - ./config/sftp.sample.json:/app/config/sftp.json:ro
-  #     - ./data/csv:/home/demo/sftp/:rw
-  #   restart: always
+  sftp:
+    image: "emberstack/sftp"
+    container_name: lotus-sftp-1
+    ports:
+      - "2222:22"
+    volumes:
+      - ./config/sftp.sample.json:/app/config/sftp.json:ro
+      - ./data/csv:/home/demo/sftp/:rw
+    restart: always
+
 
 volumes:
   postgres_data:
