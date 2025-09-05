@@ -309,13 +309,14 @@ insert_single_price_record() {
                 status INTEGER DEFAULT 4,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                item_code VARCHAR(50),
-                action VARCHAR(50) DEFAULT ''
+                item VARCHAR(50),
+                action VARCHAR(50) DEFAULT '',
+                price_change_display_id VARCHAR(100)
             );
             
             CREATE INDEX IF NOT EXISTS idx_price_status ON price(status);
             CREATE INDEX IF NOT EXISTS idx_price_created_at ON price(created_at);
-            CREATE INDEX IF NOT EXISTS idx_price_item_code ON price(item_code);
+            CREATE INDEX IF NOT EXISTS idx_price_item ON price(item);
         \"" &>/dev/null
     fi
     
@@ -327,11 +328,15 @@ insert_single_price_record() {
     local rand=$((RANDOM % 100 + 1))
     if [ $rand -le 10 ]; then status=3; fi
     
+    # Generate random price_change_display_id
+    local display_texts=("PRICE_UPDATE_001" "DISCOUNT_APPLIED" "SEASONAL_CHANGE" "BULK_PRICING" "PROMO_ACTIVE" "MARKET_ADJUSTMENT" "INVENTORY_CLEAR" "NEW_PRODUCT_LAUNCH")
+    local price_change_display_id=${display_texts[$((RANDOM % ${#display_texts[@]}))]}
+    
     # Insert record into price table with timeout
     timeout 3 bash -c "
         PGPASSWORD='$DB_PASSWORD' psql -h '$DB_HOST' -p '$DB_PORT' -U '$DB_USER' -d '$DB_NAME' -c \"
-            INSERT INTO price (path_file, status, item_code, action)
-            VALUES ('$docker_path', $status, '$item_code', '');
+            INSERT INTO price (path_file, status, item, action, price_change_display_id)
+            VALUES ('$docker_path', $status, '$item_code', '', '$price_change_display_id');
         \"
     " &>/dev/null
 }
@@ -381,7 +386,7 @@ generate_promotion_files() {
             end_date=$(date -d "$INPUT_DATE + $days_to_add days" +%Y-%m-%d)
         fi
         
-        cat > "$file_path" << EOF
+        cat > "$file_path" << EOF 
 PromoID,Item,Discount,StartDate,EndDate,Batch
 $promo1,$item1,$discount1,$INPUT_DATE,$end_date,$timestamp
 $promo2,$item2,$discount2,$INPUT_DATE,$end_date,$timestamp
