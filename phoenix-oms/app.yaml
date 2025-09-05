@@ -1,0 +1,23 @@
+runtime: nodejs18
+service: phoenix-oms
+
+env_variables:
+  NODE_ENV: production
+  PORT: 8080
+  DB_HOST: 34.143.199.45
+  DB_PORT: 5432
+  DB_NAME: lotus_o2o
+  DB_USER: lotus_user
+  DB_PASSWORD: lotus_password123
+  JWT_SECRET: your-super-secret-jwt-key-here
+  API_KEY: 0x9f299A715cb6aF84e93ba90371538Ddf130E1ec0021hf902
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 10
+
+resources:
+  cpu: 1
+  memory_gb: 1
+  disk_size_gb: 10

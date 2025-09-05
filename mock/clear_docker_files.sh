@@ -120,5 +120,3 @@ docker exec -e HARD_DELETE="${HARD_DELETE}" "${DOCKER_CONTAINER}" bash -lc '
 '
 
 echo "[done] All files cleared inside '${DOCKER_CONTAINER}'."
-
-
