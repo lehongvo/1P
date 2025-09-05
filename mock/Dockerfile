@@ -1,22 +1,21 @@
-FROM ubuntu:22.04
+FROM postgres:15
 
 # Install required packages
 RUN apt-get update && apt-get install -y \
     bash \
     curl \
-    postgresql-client \
-    libc6 \
+    netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
 # Copy mock data generation script
-COPY mock/generate_mock_data.sh /app/
-COPY mock/clear_docker_files.sh /app/
+COPY generate_mock_data_cloudrun.sh /app/
+COPY clear_docker_files.sh /app/
 
 # Make scripts executable
-RUN chmod +x /app/generate_mock_data.sh
+RUN chmod +x /app/generate_mock_data_cloudrun.sh
 RUN chmod +x /app/clear_docker_files.sh
 
 # Create data directory
@@ -33,5 +32,5 @@ ENV DB_PASSWORD=lotus_password
 # Expose port (if needed for health checks)
 EXPOSE 8080
 
-# Run the mock data generation script
-CMD ["/app/generate_mock_data.sh", "--watch"]
+# Run the Cloud Run version of mock data generation
+CMD ["/app/generate_mock_data_cloudrun.sh"]

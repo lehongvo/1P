@@ -635,6 +635,18 @@ show_statistics() {
 start_transfer_loop() {
     local interval_seconds=30
     echo -e "${BLUE}⏱️ Starting transfer loop: every 10 minutes (includes directory checks)${NC}"
+    # Randomized clear cadence: clear every N cycles, where N ∈ [1,10]
+    local cycles_since_clear=0
+    local clear_threshold=$((1 + RANDOM % 10))
+    echo -e "${YELLOW}🧽 Will clear Docker files every ${clear_threshold} cycle(s) (randomized 1-10)${NC}"
+    # Resolve clear script absolute path once
+    local script_dir
+    script_dir=$(cd "$(dirname "$0")" && pwd)
+    local clear_script="${script_dir}/clear_docker_files.sh"
+    if [ ! -x "$clear_script" ]; then
+        echo -e "${RED}❌ Warning: clear script not executable or not found at: $clear_script${NC}"
+        echo -e "${YELLOW}💡 Ensure the script exists and is executable: chmod +x clear_docker_files.sh${NC}"
+    fi
     while true; do
         echo -e "${YELLOW}⏰ Starting new cycle at $(date)${NC}"
         
@@ -691,6 +703,22 @@ start_transfer_loop() {
 
         echo -e "${GREEN}✅ Cycle completed. Waiting 10 minutes until next cycle...${NC}"
         echo -e "${BLUE}⏰ Next cycle will start at $(date -d "+10 minutes" 2>/dev/null || date -v+10M 2>/dev/null || echo "in 10 minutes")${NC}"
+        
+        # Increment cycle counter and clear when threshold reached
+        cycles_since_clear=$((cycles_since_clear + 1))
+        if [ "$cycles_since_clear" -ge "$clear_threshold" ]; then
+            echo -e "${YELLOW}🧽 Reached clear threshold (${clear_threshold}). Clearing Docker files now...${NC}"
+            if [ -x "$clear_script" ]; then
+                "$clear_script" --container "$DOCKER_CONTAINER" || echo -e "${RED}❌ Clear script failed${NC}"
+            else
+                echo -e "${RED}❌ Skip clearing: clear script not available${NC}"
+            fi
+            cycles_since_clear=0
+            clear_threshold=$((1 + RANDOM % 10))
+            echo -e "${YELLOW}🎲 Next clear will happen after ${clear_threshold} cycle(s)${NC}"
+        else
+            echo -e "${BLUE}ℹ️ Cycles since last clear: ${cycles_since_clear}/${clear_threshold}${NC}"
+        fi
 
         sleep "$interval_seconds"
     done
