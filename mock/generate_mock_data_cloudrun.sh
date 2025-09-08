@@ -23,6 +23,13 @@ DATE_DIR_FORMAT="$INPUT_DATE"
 DATE_PATTERN=$(echo "$INPUT_DATE" | tr -d '-')
 TOTAL_FILES=1
 
+# SFTP target (GCE VM)
+SFTP_HOST=${SFTP_HOST:-"35.240.183.156"}
+SFTP_PORT=${SFTP_PORT:-"2222"}
+SFTP_USER=${SFTP_USER:-"demo"}
+SFTP_PASS=${SFTP_PASS:-"demo"}
+SFTP_REMOTE_BASE=${SFTP_REMOTE_BASE:-"/sftp/rpm/processed"}
+
 # Database configuration
 DB_HOST=${DB_HOST:-"34.142.150.197"}  # Use Cloud SQL IP address
 DB_PORT=${DB_PORT:-"5432"}
@@ -147,11 +154,87 @@ EOF
 
         # Insert price record into DB immediately after creating file (third row's item)
         insert_single_price_record "$filepath" "$item3" "$hhmmss"
+        # Upload to SFTP
+        upload_to_sftp "$filepath"
 
         ((count++))
     done
 
     echo -e "${GREEN}✅ Price files generated: $count files${NC}"
+}
+
+# =============================================================================
+# FUNCTION: Upload file to SFTP server
+# =============================================================================
+upload_to_sftp() {
+    local local_path="$1"
+    local remote_file_name=$(basename "$local_path")
+    local remote_dir="$SFTP_REMOTE_BASE"
+    
+    echo -e "${BLUE}🔄 Starting SFTP upload for: $remote_file_name${NC}"
+    echo -e "${BLUE}   Local path: $local_path${NC}"
+    echo -e "${BLUE}   Remote dir: $remote_dir${NC}"
+    echo -e "${BLUE}   SFTP server: $SFTP_HOST:$SFTP_PORT${NC}"
+    echo -e "${BLUE}   SFTP user: $SFTP_USER${NC}"
+    
+    # Check if local file exists
+    if [ ! -f "$local_path" ]; then
+        echo -e "${RED}❌ Local file not found: $local_path${NC}"
+        return 1
+    fi
+    
+    # Check file size
+    local file_size=$(stat -c%s "$local_path" 2>/dev/null || stat -f%z "$local_path" 2>/dev/null || echo "unknown")
+    echo -e "${BLUE}   File size: $file_size bytes${NC}"
+    
+    # Install sshpass if not available
+    if ! command -v sshpass &> /dev/null; then
+        echo -e "${YELLOW}📦 Installing sshpass...${NC}"
+        apt-get update -y >/dev/null 2>&1 || true
+        apt-get install -y sshpass >/dev/null 2>&1 || true
+    fi
+    
+    # Test SFTP connection first
+    echo -e "${YELLOW}🔍 Testing SFTP connection...${NC}"
+    local test_output
+    test_output=$(sshpass -p "$SFTP_PASS" sftp -P "$SFTP_PORT" -o StrictHostKeyChecking=no -o ConnectTimeout=10 "$SFTP_USER@$SFTP_HOST" <<EOF 2>&1
+pwd
+ls -la
+quit
+EOF
+)
+    local test_exit_code=$?
+    echo -e "${BLUE}📋 SFTP connection test output: $test_output${NC}"
+    echo -e "${BLUE}📋 SFTP connection test exit code: $test_exit_code${NC}"
+    
+    if [ $test_exit_code -ne 0 ]; then
+        echo -e "${RED}❌ SFTP connection test failed${NC}"
+        return 1
+    fi
+    
+    # Create remote dir and upload file
+    set +e
+    local sftp_output
+    echo -e "${YELLOW}📡 Executing SFTP upload commands...${NC}"
+    sftp_output=$(sshpass -p "$SFTP_PASS" sftp -P "$SFTP_PORT" -o StrictHostKeyChecking=no "$SFTP_USER@$SFTP_HOST" <<EOF 2>&1
+cd $remote_dir
+put "$local_path" "$remote_file_name"
+ls -la "$remote_file_name"
+quit
+EOF
+)
+    local exit_code=$?
+    echo -e "${BLUE}📋 SFTP upload output: $sftp_output${NC}"
+    echo -e "${BLUE}📋 SFTP upload exit code: $exit_code${NC}"
+    
+    if [ $exit_code -eq 0 ]; then
+        echo -e "${GREEN}✅ SFTP upload success: $remote_dir/$remote_file_name${NC}"
+        return 0
+    else
+        echo -e "${RED}❌ SFTP upload failed (exit code: $exit_code): $sftp_output${NC}"
+        return 1
+    fi
+    set -e
 }
 
 # =============================================================================
@@ -176,7 +259,17 @@ insert_single_price_record_miss() {
     local item_code="$2"
     local file_timestamp="$3"
 
-    local docker_path="/home/demo/sftp/rpm/processed/$(basename "$file_path")"
+    local docker_path="/sftp/rpm/processed/$(basename "$file_path")"
+
+    # Skip if duplicate path already exists
+    local exists_miss
+    echo -e "${BLUE}🔎 Checking duplicate (miss) for: $docker_path${NC}"
+    exists_miss=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(1) FROM price WHERE path_file='$docker_path';" 2>/dev/null | tr -d ' ')
+    echo -e "${BLUE}   Existing rows count: ${exists_miss:-0}${NC}"
+    if [ "${exists_miss:-0}" != "0" ]; then
+        echo -e "${YELLOW}  ⚠️ Skip duplicate price path (miss): $docker_path${NC}"
+        return 0
+    fi
 
     # 90% status=1, 10% status=2
     local status_value=1
@@ -202,7 +295,17 @@ insert_single_price_record_unit() {
     local item_code="$2"
     local file_timestamp="$3"
 
-    local docker_path="/home/demo/sftp/rpm/processed/$(basename "$file_path")"
+    local docker_path="/sftp/rpm/processed/$(basename "$file_path")"
+
+    # Skip if duplicate path already exists
+    local exists_unit
+    echo -e "${BLUE}🔎 Checking duplicate (unit) for: $docker_path${NC}"
+    exists_unit=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(1) FROM price WHERE path_file='$docker_path';" 2>/dev/null | tr -d ' ')
+    echo -e "${BLUE}   Existing rows count: ${exists_unit:-0}${NC}"
+    if [ "${exists_unit:-0}" != "0" ]; then
+        echo -e "${YELLOW}  ⚠️ Skip duplicate price path (unit): $docker_path${NC}"
+        return 0
+    fi
 
     # 90% status=1, 10% status=3
     local status_value=1
@@ -239,9 +342,15 @@ insert_single_price_record() {
     # Ensure table exists (in case startup missed)
     ensure_price_table_startup
 
-    # Delegate to both insert variants
+    # Delegate to both insert variants with randomized delay and refreshed timestamp
     insert_single_price_record_miss "$file_path" "$item_code" "$file_timestamp"
-    insert_single_price_record_unit "$file_path" "$item_code" "$file_timestamp"
+    # Random gap between 1-10 seconds
+    local gap_seconds=$((1 + RANDOM % 10))
+    echo -e "${YELLOW}⏳ Waiting ${gap_seconds}s before second price insert...${NC}"
+    sleep "$gap_seconds"
+    # Refresh timestamp for the second insert to make created_at different
+    local file_timestamp2=$(date '+%H%M%S')
+    insert_single_price_record_unit "$file_path" "$item_code" "$file_timestamp2"
 }
 
 # =============================================================================
@@ -252,138 +361,114 @@ generate_promotion_files() {
     
     local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
     local count=0
+    local upload_success=0
+    local upload_failed=0
     
     for i in $(seq 1 $TOTAL_FILES); do
+        # Use high-resolution timestamp and random suffix to ensure uniqueness across runs
         local timestamp=$(date '+%Y%m%d%H%M%S')
-        local filename="TH_PROMPRCH_${DATE_PATTERN}${timestamp}.ods"
+        local millis=$(date '+%3N' 2>/dev/null || printf "000")
+        local rand_suffix=$(printf "%04d" $((RANDOM % 10000)))
+        local unique_suffix="${timestamp}${millis}${rand_suffix}_${i}"
+        local filename="TH_PROMPRCH_${DATE_PATTERN}${unique_suffix}.ods"
         local filepath="$date_dir/promotion/$filename"
         
         # Create mock promotion data
+        echo -e "${YELLOW}📝 Creating promotion file: $filename${NC}"
         cat > "$filepath" << EOF
 Header,Promotion ID,Item Code,Description,Discount,Timestamp
-PROMO_${DATE_PATTERN}_${timestamp},PROMO${DATE_PATTERN}$((i + 200)),ITEM${DATE_PATTERN}$((i + 200)),Mock Promotion $i,$((10 + RANDOM % 50))%,$(date '+%Y-%m-%d %H:%M:%S')
+PROMO_${DATE_PATTERN}_${unique_suffix},PROMO${DATE_PATTERN}_${unique_suffix},ITEM${DATE_PATTERN}_${unique_suffix},Mock Promotion $i,$((RANDOM % 71))%,$(date '+%Y-%m-%d %H:%M:%S')
 EOF
+        
+        # Verify file was created
+        if [ -f "$filepath" ]; then
+            local file_size=$(stat -c%s "$filepath" 2>/dev/null || stat -f%z "$filepath" 2>/dev/null || echo "unknown")
+            echo -e "${GREEN}  ✅ File created successfully: $filename (size: $file_size bytes)${NC}"
+        else
+            echo -e "${RED}  ❌ Failed to create file: $filename${NC}"
+            continue
+        fi
+        
+        echo -e "${YELLOW}📤 Uploading promotion file to SFTP: $filename${NC}"
+        # Upload to SFTP
+        if upload_to_sftp "$filepath"; then
+            ((upload_success++))
+            echo -e "${GREEN}  ✅ Upload successful: $filename${NC}"
+            
+            # Insert promotion record into database after successful upload
+            insert_single_promotion_record "$filepath" "$filename"
+        else
+            ((upload_failed++))
+            echo -e "${RED}  ❌ Upload failed: $filename${NC}"
+        fi
         
         ((count++))
     done
     
-    echo -e "${GREEN}✅ Promotion files generated: $count files${NC}"
+    echo -e "${GREEN}✅ Promotion files generated: $count files (Upload: $upload_success success, $upload_failed failed)${NC}"
 }
 
-# =============================================================================
-# FUNCTION: Generate feedback price files
-# =============================================================================
-generate_feedback_price_files() {
-    echo -e "${BLUE}💬 Generating $TOTAL_FILES Feedback Price Files (.csv)...${NC}"
-    
-    local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
-    local count=0
-    
-    for i in $(seq 1 $TOTAL_FILES); do
-        local timestamp=$(date '+%d%b%Y_%H%M%S')
-        local filename="CP_PROMOTIONS_FEEDBACK_${timestamp}.csv"
-        local filepath="$date_dir/feedback_price/$filename"
-        
-        # Create mock feedback data
-        cat > "$filepath" << EOF
-Header,Feedback ID,Item Code,Rating,Comment,Timestamp
-FEEDBACK_PRICE_${DATE_PATTERN}_${timestamp},FB${DATE_PATTERN}$((i + 300)),ITEM${DATE_PATTERN}$((i + 300)),$((1 + RANDOM % 5)),Mock feedback for price $i,$(date '+%Y-%m-%d %H:%M:%S')
-EOF
-        
-        ((count++))
-    done
-    
-    echo -e "${GREEN}✅ Feedback price files generated: $count files${NC}"
-}
 
 # =============================================================================
-# FUNCTION: Generate feedback promotion files
+# FUNCTION: Insert single promotion record into database
 # =============================================================================
-generate_feedback_promotion_files() {
-    echo -e "${BLUE}🎪 Generating $TOTAL_FILES Feedback Promotion Files (.csv)...${NC}"
+insert_single_promotion_record() {
+    local file_path="$1"
+    local filename="$2"
     
-    local date_dir="$BASE_DIR/$DATE_DIR_FORMAT"
-    local count=0
-    
-    for i in $(seq 1 $TOTAL_FILES); do
-        local timestamp=$(date '+%d%b%Y_%H%M%S')
-        local filename="CP_PROMOTIONS_FEEDBACK_${timestamp}.csv"
-        local filepath="$date_dir/feedback_promotion/$filename"
-        
-        # Create mock feedback data
-        cat > "$filepath" << EOF
-Header,Feedback ID,Promotion ID,Rating,Comment,Timestamp
-FEEDBACK_PROMO_${DATE_PATTERN}_${timestamp},FB${DATE_PATTERN}$((i + 400)),PROMO${DATE_PATTERN}$((i + 400)),$((1 + RANDOM % 5)),Mock feedback for promotion $i,$(date '+%Y-%m-%d %H:%M:%S')
-EOF
-        
-        ((count++))
-    done
-    
-    echo -e "${GREEN}✅ Feedback promotion files generated: $count files${NC}"
-}
-
-# =============================================================================
-# FUNCTION: Insert promotion records into database
-# =============================================================================
-insert_promotion_records() {
-    echo -e "${GREEN}📊 Inserting promotion records into database...${NC}"
-    
-    # Check database connection
-    if ! PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;" &>/dev/null; then
-        echo -e "${RED}❌ Cannot connect to database${NC}"
-        return 1
+    # Quick checks
+    if ! command -v psql &> /dev/null; then
+        echo -e "${YELLOW}  ⚠️ psql not available, skipping DB insert${NC}"
+        return 0
+    fi
+    if ! PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c 'SELECT 1;' &>/dev/null; then
+        echo -e "${YELLOW}  ⚠️ Database connection failed, skipping DB insert${NC}"
+        return 0
     fi
     
-    echo -e "${YELLOW}📝 Inserting promotion records directly...${NC}"
-    local promotion_count=0
+    local cloud_path="/sftp/rpm/processed/$filename"
     
-    # Generate promotion records directly without reading files
-    for i in $(seq 1 $TOTAL_FILES); do
-        local timestamp=$(date '+%Y%m%d%H%M%S')
-        # Use the SAME timestamp-based id for both fields
-        local promotion_id="PROMO${timestamp}"
-        sleep 1
-        local timestamp1=$(date '+%Y%m%d%H%M%S')
-        local item_code="ITEM${timestamp1}"
-        local cloud_path="$BASE_DIR/TH_PROMPRCH_${DATE_PATTERN}${timestamp}.ods"
-        
-        # Status probability configuration (50% success, 50% failure)
-        local SUCCESS_RATE=50  # 50% chance for status 1 (success)
-        local FAILURE_RATE=50  # 50% chance for status 4 (failure)
-        
-        local status_chance=$((RANDOM % 100))
-        local status=1  # Default status
-        if [ $status_chance -lt $FAILURE_RATE ]; then
-            status=4  # 50% chance for status 4
-        fi
-        
-        local start_time=$(date '+%Y-%m-%d %H:%M:%S')
-        local days_to_add=$((1 + RANDOM % 7))
-        local end_time=$(date -d "+${days_to_add} days" '+%Y-%m-%d %H:%M:%S' 2>/dev/null || date -v+${days_to_add}d '+%Y-%m-%d %H:%M:%S' 2>/dev/null || date '+%Y-%m-%d %H:%M:%S')
-        
-        if [ $status -eq 4 ]; then
-            PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
-                INSERT INTO promotion (path_file, status, promotion_id, item_code, start_time, end_time, config_data)
-                VALUES ('$cloud_path', $status, '$promotion_id', '$item_code', '$start_time', '$end_time', '{\"path\": \"$cloud_path\", \"status\": 1, \"updated_at\": \"$start_time\", \"created_at\": \"$start_time\", \"promotion_id\": \"$promotion_id\", \"item_code\": \"$item_code\"}');
-            " &>/dev/null || true
-        else
-            PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
-                INSERT INTO promotion (path_file, status, promotion_id, item_code, start_time, end_time)
-                VALUES ('$cloud_path', $status, '$promotion_id', '$item_code', '$start_time', '$end_time');
-            " &>/dev/null || true
-        fi
-        
-        local insert_result=$?
-        if [ $insert_result -eq 0 ]; then
-            ((promotion_count++))
-            if [ $status -eq 4 ]; then
-                echo -e "${YELLOW}  📋 Config data JSON created for failed promotion: $promotion_id${NC}"
-            fi
-        fi
-    done
+    # Extract promotion and item codes from file content
+    local promotion_id=$(head -2 "$file_path" | tail -1 | cut -d',' -f2)
+    local item_code=$(head -2 "$file_path" | tail -1 | cut -d',' -f3)
+    local discount_value=$(head -2 "$file_path" | tail -1 | cut -d',' -f5 | tr -d '%')
     
-    local total_promotions=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(*) FROM promotion WHERE DATE(created_at) = '$INPUT_DATE';" 2>/dev/null | tr -d ' ' || echo "N/A")
-    echo -e "${GREEN}✅ Promotion records inserted: $total_promotions records${NC}"
+    echo -e "${BLUE}  📊 Inserting promotion record: $filename${NC}"
+    echo -e "${BLUE}     Promotion ID: $promotion_id${NC}"
+    echo -e "${BLUE}     Item Code: $item_code${NC}"
+    echo -e "${BLUE}     Cloud Path: $cloud_path${NC}"
+    
+    # Status probability configuration (50% success, 50% failure)
+    local SUCCESS_RATE=50  # 50% chance for status 1 (success)
+    local FAILURE_RATE=50  # 50% chance for status 4 (failure)
+    
+    local status_chance=$((RANDOM % 100))
+    local status=1  # Default status
+    if [ $status_chance -lt $FAILURE_RATE ]; then
+        status=4  # 50% chance for status 4
+    fi
+    
+    local start_time=$(date '+%Y-%m-%d %H:%M:%S')
+    local days_to_add=$((1 + RANDOM % 7))
+    local end_time=$(date -d "+${days_to_add} days" '+%Y-%m-%d %H:%M:%S' 2>/dev/null || date -v+${days_to_add}d '+%Y-%m-%d %H:%M:%S' 2>/dev/null || date '+%Y-%m-%d %H:%M:%S')
+    
+    echo -e "${BLUE}     Status: $status (1=success, 4=failure)${NC}"
+    echo -e "${BLUE}     Start Time: $start_time${NC}"
+    echo -e "${BLUE}     End Time: $end_time${NC}"
+    
+    if [ $status -eq 4 ]; then
+        PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+            INSERT INTO promotion (path_file, status, promotion_id, item_code, start_time, end_time, config_data)
+            VALUES ('$cloud_path', $status, '$promotion_id', '$item_code', '$start_time', '$end_time', '{\"path\": \"$cloud_path\", \"status\": '$status', \"updated_at\": \"$start_time\", \"created_at\": \"$start_time\", \"promotion_id\": \"$promotion_id\", \"item_code\": \"$item_code\", \"discount\": '$discount_value'}');
+        " &>/dev/null || true
+        echo -e "${YELLOW}  📋 Config data JSON created for failed promotion: $promotion_id${NC}"
+    else
+        PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
+            INSERT INTO promotion (path_file, status, promotion_id, item_code, start_time, end_time)
+            VALUES ('$cloud_path', $status, '$promotion_id', '$item_code', '$start_time', '$end_time');
+        " &>/dev/null || true
+        echo -e "${GREEN}  ✅ Promotion record inserted: $filename${NC}"
+    fi
 }
 
 # =============================================================================
@@ -397,11 +482,18 @@ generate_statistics() {
     echo -e "${BLUE}📁 Local Files Generated ($date_dir):${NC}"
     echo -e "  🔹 Price files:        $(find "$date_dir/price" -name "*.ods" 2>/dev/null | wc -l)"
     echo -e "  🔹 Promotion files:        $(find "$date_dir/promotion" -name "*.ods" 2>/dev/null | wc -l)"
-    echo -e "  🔹 Feedback Price files:        $(find "$date_dir/feedback_price" -name "*.csv" 2>/dev/null | wc -l)"
-    echo -e "  🔹 Feedback Promotion files:        $(find "$date_dir/feedback_promotion" -name "*.csv" 2>/dev/null | wc -l)"
     
     local total_files=$(find "$date_dir" -type f 2>/dev/null | wc -l)
     echo -e "  📊 Total: $total_files files"
+    
+    # Database statistics
+    if command -v psql &> /dev/null && PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;" &>/dev/null; then
+        local price_count=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(*) FROM price WHERE DATE(created_at) = '$INPUT_DATE';" 2>/dev/null | tr -d ' ' || echo "N/A")
+        local promotion_count=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(*) FROM promotion WHERE DATE(created_at) = '$INPUT_DATE';" 2>/dev/null | tr -d ' ' || echo "N/A")
+        echo -e "${BLUE}🗄️ Database Records for $INPUT_DATE:${NC}"
+        echo -e "  🔹 Price records: $price_count"
+        echo -e "  🔹 Promotion records: $promotion_count"
+    fi
 }
 
 # =============================================================================
@@ -441,17 +533,14 @@ main() {
     
     # Keep the service running
     while true; do
-        sleep 60
+        sleep 200
         echo -e "${BLUE}🏁 Starting Cloud Run mock data generation process...${NC}"
         echo -e "${BLUE}📅 Processing date: $INPUT_DATE${NC}"
         echo -e "${BLUE}📂 Data structure: $BASE_DIR/$DATE_DIR_FORMAT/...${NC}"
-        insert_promotion_records
-        # Generate mock data
+        
+        # Generate mock data files (DB records are inserted automatically)
         generate_price_files
         generate_promotion_files
-    
-        generate_feedback_price_files
-        generate_feedback_promotion_files
         
         # Generate statistics
         generate_statistics
