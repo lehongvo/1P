@@ -271,10 +271,10 @@ insert_single_price_record_miss() {
         return 0
     fi
 
-    # 90% status=1, 10% status=2
+    # 50% status=1, 50% status=2
     local status_value=1
-    local rand=$((RANDOM % 100 + 1))
-    if [ $rand -le 10 ]; then status_value=2; fi
+    local rand=$((RANDOM % 100))
+    if [ $rand -lt 50 ]; then status_value=2; fi
 
     # Random price_change_display_id
     local display_texts=("PRICE_UPDATE_001" "DISCOUNT_APPLIED" "SEASONAL_CHANGE" "BULK_PRICING" "PROMO_ACTIVE" "MARKET_ADJUSTMENT" "INVENTORY_CLEAR" "NEW_PRODUCT_LAUNCH")
@@ -297,20 +297,21 @@ insert_single_price_record_unit() {
 
     local docker_path="/sftp/rpm/processed/$(basename "$file_path")"
 
-    # Skip if duplicate path already exists
+    # Allow one additional row for the same path with status=3.
+    # Skip only if a status=3 row already exists for this path.
     local exists_unit
-    echo -e "${BLUE}🔎 Checking duplicate (unit) for: $docker_path${NC}"
-    exists_unit=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(1) FROM price WHERE path_file='$docker_path';" 2>/dev/null | tr -d ' ')
-    echo -e "${BLUE}   Existing rows count: ${exists_unit:-0}${NC}"
+    echo -e "${BLUE}🔎 Checking existing status=3 (unit) for: $docker_path${NC}"
+    exists_unit=$(PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -t -c "SELECT COUNT(1) FROM price WHERE path_file='$docker_path' AND status=3;" 2>/dev/null | tr -d ' ')
+    echo -e "${BLUE}   Existing status=3 rows: ${exists_unit:-0}${NC}"
     if [ "${exists_unit:-0}" != "0" ]; then
-        echo -e "${YELLOW}  ⚠️ Skip duplicate price path (unit): $docker_path${NC}"
+        echo -e "${YELLOW}  ⚠️ Skip duplicate status=3 for path (unit): $docker_path${NC}"
         return 0
     fi
 
-    # 90% status=1, 10% status=3
+    # 50% status=1, 50% status=3
     local status_value=1
-    local rand=$((RANDOM % 100 + 1))
-    if [ $rand -le 10 ]; then status_value=3; fi
+    local rand=$((RANDOM % 100))
+    if [ $rand -lt 50 ]; then status_value=3; fi
 
     # Random price_change_display_id
     local display_texts=("PRICE_UPDATE_001" "DISCOUNT_APPLIED" "SEASONAL_CHANGE" "BULK_PRICING" "PROMO_ACTIVE" "MARKET_ADJUSTMENT" "INVENTORY_CLEAR" "NEW_PRODUCT_LAUNCH")
@@ -365,11 +366,11 @@ generate_promotion_files() {
     local upload_failed=0
     
     for i in $(seq 1 $TOTAL_FILES); do
-        # Use high-resolution timestamp and random suffix to ensure uniqueness across runs
-        local timestamp=$(date '+%Y%m%d%H%M%S')
+        # Use high-resolution time (HHMMSS) so we don't duplicate the YYYYMMDD part
+        local timestamp=$(date '+%H%M%S')
         local millis=$(date '+%3N' 2>/dev/null || printf "000")
         local rand_suffix=$(printf "%04d" $((RANDOM % 10000)))
-        local unique_suffix="${timestamp}${millis}${rand_suffix}_${i}"
+        local unique_suffix="${timestamp}${millis}${rand_suffix}"
         local filename="TH_PROMPRCH_${DATE_PATTERN}${unique_suffix}.ods"
         local filepath="$date_dir/promotion/$filename"
         
@@ -438,14 +439,12 @@ insert_single_promotion_record() {
     echo -e "${BLUE}     Item Code: $item_code${NC}"
     echo -e "${BLUE}     Cloud Path: $cloud_path${NC}"
     
-    # Status probability configuration (50% success, 50% failure)
-    local SUCCESS_RATE=50  # 50% chance for status 1 (success)
-    local FAILURE_RATE=50  # 50% chance for status 4 (failure)
-    
-    local status_chance=$((RANDOM % 100))
-    local status=1  # Default status
-    if [ $status_chance -lt $FAILURE_RATE ]; then
-        status=4  # 50% chance for status 4
+    # Exact 50/50 status selection using a single random bit
+    local status
+    if [ $((RANDOM & 1)) -eq 0 ]; then
+        status=1
+    else
+        status=4
     fi
     
     local start_time=$(date '+%Y-%m-%d %H:%M:%S')
@@ -459,7 +458,23 @@ insert_single_promotion_record() {
     if [ $status -eq 4 ]; then
         PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "
             INSERT INTO promotion (path_file, status, promotion_id, item_code, start_time, end_time, config_data)
-            VALUES ('$cloud_path', $status, '$promotion_id', '$item_code', '$start_time', '$end_time', '{\"path\": \"$cloud_path\", \"status\": '$status', \"updated_at\": \"$start_time\", \"created_at\": \"$start_time\", \"promotion_id\": \"$promotion_id\", \"item_code\": \"$item_code\", \"discount\": '$discount_value'}');
+            VALUES (
+                '$cloud_path',
+                $status,
+                '$promotion_id',
+                '$item_code',
+                '$start_time',
+                '$end_time',
+                json_build_object(
+                    'path', '$cloud_path',
+                    'status', $status,
+                    'updated_at', '$start_time',
+                    'created_at', '$start_time',
+                    'promotion_id', '$promotion_id',
+                    'item_code', '$item_code',
+                    'discount', $discount_value
+                )
+            );
         " &>/dev/null || true
         echo -e "${YELLOW}  📋 Config data JSON created for failed promotion: $promotion_id${NC}"
     else
@@ -533,7 +548,7 @@ main() {
     
     # Keep the service running
     while true; do
-        sleep 200
+        sleep 30
         echo -e "${BLUE}🏁 Starting Cloud Run mock data generation process...${NC}"
         echo -e "${BLUE}📅 Processing date: $INPUT_DATE${NC}"
         echo -e "${BLUE}📂 Data structure: $BASE_DIR/$DATE_DIR_FORMAT/...${NC}"
