@@ -4,7 +4,7 @@
 # Based on Airflow configuration paths
 
 echo "=== SFTP Server File Paths ==="
-echo "Server: 35.240.183.156:2222"
+echo "Server: 34.142.196.11:2222"
 echo "User: demo"
 echo ""
 
@@ -16,7 +16,7 @@ get_files_with_paths() {
     echo "=== $category Files ==="
     echo "Path: $path"
     
-    sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@35.240.183.156 << EOF
+    sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@34.142.196.11 << EOF
 cd $path
 pwd
 ls -1 | head -10
@@ -28,7 +28,7 @@ EOF
 # Get Price files (TH_PRCH_*)
 echo "=== PRICE FILES ==="
 echo "Path: /sftp/rpm/processed"
-sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@35.240.183.156 << 'EOF'
+sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@34.142.196.11 << 'EOF'
 cd /sftp/rpm/processed
 ls -1 | grep "TH_PRCH_" | head -5 | while read file; do echo "/sftp/rpm/processed/$file"; done
 quit
@@ -38,7 +38,7 @@ echo ""
 # Get Promotion files (TH_PROMPRCH_*)
 echo "=== PROMOTION FILES ==="
 echo "Path: /sftp/rpm/processed"
-sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@35.240.183.156 << 'EOF'
+sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@34.142.196.11 << 'EOF'
 cd /sftp/rpm/processed
 ls -1 | grep "TH_PROMPRCH_" | head -5 | while read file; do echo "/sftp/rpm/processed/$file"; done
 quit
@@ -48,7 +48,7 @@ echo ""
 # Get all processed files
 echo "=== ALL PROCESSED FILES ==="
 echo "Path: /sftp/rpm/processed"
-sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@35.240.183.156 << 'EOF'
+sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@34.142.196.11 << 'EOF'
 cd /sftp/rpm/processed
 ls -1 | head -10 | while read file; do echo "/sftp/rpm/processed/$file"; done
 quit
@@ -63,7 +63,7 @@ echo ""
 
 # File count summary
 echo "=== FILE COUNT SUMMARY ==="
-sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@35.240.183.156 << 'EOF'
+sshpass -p "demo" sftp -P 2222 -o StrictHostKeyChecking=no demo@34.142.196.11 << 'EOF'
 cd /sftp/rpm/processed
 ls -1 | wc -l
 quit

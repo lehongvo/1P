@@ -24,7 +24,7 @@ DATE_PATTERN=$(echo "$INPUT_DATE" | tr -d '-')
 TOTAL_FILES=1
 
 # SFTP target (GCE VM)
-SFTP_HOST=${SFTP_HOST:-"35.240.183.156"}
+SFTP_HOST=${SFTP_HOST:-"34.142.196.11"}
 SFTP_PORT=${SFTP_PORT:-"2222"}
 SFTP_USER=${SFTP_USER:-"demo"}
 SFTP_PASS=${SFTP_PASS:-"demo"}
@@ -439,12 +439,11 @@ insert_single_promotion_record() {
     echo -e "${BLUE}     Item Code: $item_code${NC}"
     echo -e "${BLUE}     Cloud Path: $cloud_path${NC}"
     
-    # Exact 50/50 status selection using a single random bit
-    local status
-    if [ $((RANDOM & 1)) -eq 0 ]; then
+    # Status probability: 10% -> 1 (success), 90% -> 4 (failure)
+    local status=4
+    local status_chance=$((RANDOM % 100))
+    if [ $status_chance -lt 10 ]; then
         status=1
-    else
-        status=4
     fi
     
     local start_time=$(date '+%Y-%m-%d %H:%M:%S')
@@ -548,7 +547,7 @@ main() {
     
     # Keep the service running
     while true; do
-        sleep 30
+        sleep 600
         echo -e "${BLUE}🏁 Starting Cloud Run mock data generation process...${NC}"
         echo -e "${BLUE}📅 Processing date: $INPUT_DATE${NC}"
         echo -e "${BLUE}📂 Data structure: $BASE_DIR/$DATE_DIR_FORMAT/...${NC}"
