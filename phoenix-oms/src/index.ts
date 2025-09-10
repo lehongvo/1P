@@ -128,17 +128,17 @@ cron.schedule('0 */2 * * * *', async () => {
   }
 });
 
-// Seed mock data every 5 minutes
-cron.schedule('0 */5 * * * *', async () => {
+// Seed mock data every 15 seconds (1 order per run)
+cron.schedule('*/15 * * * * *', async () => {
   try {
-    console.log('🌱Start: Seeding mock data via cron (every 5 minutes)');
-    await fetch(`http://localhost:${PORT}/api/v1/seed-mock-data`, {
+    console.log('🌱Start: Seeding mock data via cron (every 15 seconds)');
+    await fetch(`http://localhost:${PORT}/api/v1/seed-mock-data?count=1`, {
       method: 'POST',
       headers: {
         'x-api-key': DATA_API_KEY
       }
     });
-    console.log('🌱End: Seeded mock data via cron (every 5 minutes)');
+    console.log('🌱End: Seeded mock data via cron (every 15 seconds)');
   } catch (e) {
     console.error('Seed cron error:', e);
   }
@@ -150,5 +150,5 @@ app.listen(PORT, () => {
   console.log(`📦 Orders API: http://localhost:${PORT}/api/v1/orders`);
   console.log(`🌱 Seed mock data: http://localhost:${PORT}/api/v1/seed-mock-data`);
   console.log('⏰ OMS auto-advance cron: every 2 minutes (97% main path, 3% exception)');
-  console.log('⏰ OMS seed cron: every 5 minutes');
+  console.log('⏰ OMS seed cron: every 15 seconds');
 });

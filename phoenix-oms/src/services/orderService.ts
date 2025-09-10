@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import pool from '../database/connection';
-import { CreateOrderRequest, Order, OrderStatus, OrderType } from '../types';
 import customerNamesData from '../data/customer_names_en.json';
 import itemsData from '../data/items_data.json';
+import pool from '../database/connection';
+import { CreateOrderRequest, Order, OrderStatus, OrderType } from '../types';
 
 export class OrderService {
   async ensureSchema(): Promise<void> {
@@ -178,7 +178,7 @@ export class OrderService {
     return { rows: rowsRes.rows, total: totalRes.rows[0]?.total || 0, statusCounts };
   }
 
-  async generateMockOrders(count: number = 2): Promise<Order[]> {
+  async generateMockOrders(count: number = 1): Promise<Order[]> {
     const mockOrders: Order[] = [];
 
     const orderTypes: OrderType[] = ['ONLINE','OFFLINE','INSTORE','MARKETPLACE','CALLCENTER'];
@@ -410,7 +410,7 @@ export class OrderService {
     }
   }
 
-  async seedMockData(count: number = 2): Promise<void> {
+  async seedMockData(count: number = 1): Promise<void> {
     await this.ensureItemsSeeded();
 
     const mockOrders = await this.generateMockOrders(count);

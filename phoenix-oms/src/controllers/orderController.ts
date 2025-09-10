@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { OrderService } from '../services/orderService';
-import { CreateOrderRequest, UpdateOrderStatusRequest, ApiResponse } from '../types';
+import { ApiResponse, CreateOrderRequest, UpdateOrderStatusRequest } from '../types';
 
 const DATA_API_KEY = '0x9f299A715cb6aF84e93ba90371538Ddf130E1ec0021hf902';
 
@@ -151,11 +151,11 @@ export class OrderController {
   async seedMockData(req: Request, res: Response): Promise<void> {
     try {
       const count = req.query.count ? parseInt(req.query.count as string, 10) : 2;
-      await this.orderService.seedMockData(isNaN(count) ? 2 : count);
+      await this.orderService.seedMockData(isNaN(count) ? 1 : count);
       
       const response: ApiResponse<any> = {
         success: true,
-        message: `Mock data seeded successfully (${isNaN(count) ? 2 : count} orders, PENDING)`
+        message: `Mock data seeded successfully (${isNaN(count) ? 1 : count} orders, PENDING)`
       };
       
       res.status(200).json(response);
